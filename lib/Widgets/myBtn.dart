@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyBtn extends StatelessWidget {
-  MyBtn({@required this.onp, @required this.title, this.isActive = false});
+  MyBtn({@required this.title, this.swapActive, this.toggleSwap});
+  final Function toggleSwap;
+  final bool swapActive;
   final String title;
-  final Function onp;
-  final bool isActive;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,7 +14,7 @@ class MyBtn extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15)),
           boxShadow: [
             BoxShadow(
-              color: isActive
+              color: swapActive
                   ? Colors.blue.withOpacity(0.5)
                   : Colors.black.withOpacity(0.1),
               spreadRadius: 2,
@@ -24,10 +24,12 @@ class MyBtn extends StatelessWidget {
           ],
           color: Colors.white,
         ),
-        child: RawMaterialButton(
-          onPressed: onp,
-          padding: EdgeInsets.symmetric(horizontal: 25),
+        height: 40,
+        width: 150,
+        child: MaterialButton(
           child: Text(title),
+          onPressed: toggleSwap,
+          padding: EdgeInsets.symmetric(horizontal: 25),
         ),
       ),
     );

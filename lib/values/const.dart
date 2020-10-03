@@ -16,3 +16,7 @@ const kSubtitle = TextStyle(
   fontSize: 16,
   letterSpacing: 2,
 );
+
+kToggleSwap(val) {
+  val ? val = !val : val = !val;
+}

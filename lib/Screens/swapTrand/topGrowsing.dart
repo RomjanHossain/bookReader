@@ -9,6 +9,7 @@ class TopGrow extends StatefulWidget {
 }
 
 class _TopGrowState extends State<TopGrow> {
+  int _number = 0;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,26 +18,29 @@ class _TopGrowState extends State<TopGrow> {
         children: [
           Expanded(
             child: TabBar(
+              onTap: (int lol) {
+                setState(() {
+                  _number = lol;
+                });
+              },
               isScrollable: true,
               indicatorColor: Colors.transparent,
               tabs: [
                 MyBtn(
                   title: 'Top Week',
-                  onp: null,
-                  isActive: true,
+                  swapActive: _number == 0 ? true : false,
                 ),
                 MyBtn(
                   title: 'Top Month',
-                  onp: null,
-                  isActive: false,
+                  swapActive: _number == 1 ? true : false,
                 ),
                 MyBtn(
                   title: 'Top Year',
-                  onp: null,
+                  swapActive: _number == 2 ? true : false,
                 ),
                 MyBtn(
                   title: 'Top All Time',
-                  onp: null,
+                  swapActive: _number == 3 ? true : false,
                 ),
               ],
             ),

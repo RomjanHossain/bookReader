@@ -74,44 +74,112 @@ class _HomePageState extends State<HomePage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              MyBtn(
-                title: 'Ebooks',
-                onp: () {},
-              ),
-              MyBtn(
-                title: 'Most Populer',
-                onp: () {},
-              ),
-              MyBtn(
-                title: 'New',
-                onp: () {},
-              ),
-              MyBtn(
-                title: 'Requested',
-                onp: () {},
-              ),
-            ],
+    return DefaultTabController(
+      length: 4,
+      child: Column(
+        children: [
+          /*
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                MyBtn(
+                  title: 'Books',
+                  onp: () {},
+                  isActive: true,
+                ),
+                MyBtn(
+                  title: 'Most Populer',
+                  onp: () {},
+                ),
+                MyBtn(
+                  title: 'New',
+                  onp: () {},
+                ),
+                MyBtn(
+                  title: 'Requested',
+                  onp: () {},
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          flex: 8,
-          child: StaggeredGridView.count(
-            crossAxisCount: 2,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            children: books,
-            scrollDirection: Axis.vertical,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            staggeredTiles: mystaggeredTiles,
+          */
+          Expanded(
+            child: TabBar(
+              isScrollable: true,
+              indicatorColor: Colors.transparent,
+              tabs: [
+                MyBtn(
+                  title: 'New Books',
+                  onp: null,
+                  isActive: true,
+                ),
+                MyBtn(
+                  title: 'Most Populer',
+                  onp: null,
+                  isActive: false,
+                ),
+                MyBtn(
+                  title: 'Tranding',
+                  onp: null,
+                ),
+                MyBtn(
+                  title: 'Requested',
+                  onp: null,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          //end tabbar
+          Expanded(
+            flex: 8,
+            child: TabBarView(
+              children: [
+                // new Books
+                StaggeredGridView.count(
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  children: books,
+                  scrollDirection: Axis.vertical,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  staggeredTiles: mystaggeredTiles,
+                ),
+                // most popular
+                StaggeredGridView.count(
+                  crossAxisCount: 3,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  children: books,
+                  scrollDirection: Axis.vertical,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  staggeredTiles: mystaggeredTiles,
+                ),
+                // Tranding
+                StaggeredGridView.count(
+                  crossAxisCount: 4,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  children: books,
+                  scrollDirection: Axis.vertical,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  staggeredTiles: mystaggeredTiles,
+                ),
+                // requested
+                StaggeredGridView.count(
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  children: books,
+                  scrollDirection: Axis.vertical,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  staggeredTiles: mystaggeredTiles,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

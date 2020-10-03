@@ -6,12 +6,12 @@ class ProfileW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black,
+              color: Colors.blue,
               blurRadius: 2,
             ),
             BoxShadow(
@@ -79,7 +79,10 @@ class ProfileW extends StatelessWidget {
                   trailing: Icon(Icons.navigate_next),
                 ),
               ),
-              MyBtn(title: 'Log Out'),
+              MyBtn(
+                title: 'Log Out',
+                swapActive: true,
+              ),
             ],
           ),
         ),

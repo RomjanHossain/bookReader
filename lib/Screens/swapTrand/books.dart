@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
     StaggeredTile.fit(1),
     StaggeredTile.fit(1),
   ];
+  int _number = 0;
   List<Widget> books = [
     Container(
       height: 250,
@@ -78,54 +79,32 @@ class _HomePageState extends State<HomePage> {
       length: 4,
       child: Column(
         children: [
-          /*
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                MyBtn(
-                  title: 'Books',
-                  onp: () {},
-                  isActive: true,
-                ),
-                MyBtn(
-                  title: 'Most Populer',
-                  onp: () {},
-                ),
-                MyBtn(
-                  title: 'New',
-                  onp: () {},
-                ),
-                MyBtn(
-                  title: 'Requested',
-                  onp: () {},
-                ),
-              ],
-            ),
-          ),
-          */
           Expanded(
             child: TabBar(
               isScrollable: true,
               indicatorColor: Colors.transparent,
+              // indicatorSize: TabBarIndicatorSize.label,
+              onTap: (int lol) {
+                setState(() {
+                  _number = lol;
+                });
+              },
               tabs: [
                 MyBtn(
                   title: 'New Books',
-                  onp: null,
-                  isActive: true,
+                  swapActive: _number == 0 ? true : false,
                 ),
                 MyBtn(
                   title: 'Most Populer',
-                  onp: null,
-                  isActive: false,
+                  swapActive: _number == 1 ? true : false,
                 ),
                 MyBtn(
                   title: 'Tranding',
-                  onp: null,
+                  swapActive: _number == 2 ? true : false,
                 ),
                 MyBtn(
                   title: 'Requested',
-                  onp: null,
+                  swapActive: _number == 3 ? true : false,
                 ),
               ],
             ),

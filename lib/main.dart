@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
 
 void main() => runApp(MyApp());
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: MyHomePage(),
+      routes: {
+        BookView.id: (context) => BookView(),
+      },
     );
   }
 }

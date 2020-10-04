@@ -122,19 +122,26 @@ class _HomePageState extends State<HomePage> {
                 // new Books
                 StaggeredGridView.countBuilder(
                   itemBuilder: (context, index) {
-                    return Container(
-                      height: 300,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                            alignment: Alignment.center,
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg',
-                            ),
-                          ),
-                          color: Colors.lightBlue,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      // ),
+                    return InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BookView(index: index))),
+                      child: Hero(
+                        tag: '_book' + index.toString(),
+                        child: Container(
+                          height: 300,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                alignment: Alignment.center,
+                                fit: BoxFit.cover,
+                                image: AssetImage('images/pro.jpg'),
+                              ),
+                              color: Colors.lightBlue,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                        ),
+                      ),
                     );
                   },
                   itemCount: 10,

@@ -15,8 +15,9 @@ class MyApp extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      home: MyHomePage(),
+      initialRoute: MyHomePage.id,
       routes: {
+        MyHomePage.id: (context) => MyHomePage(),
         BookView.id: (context) => BookView(),
       },
     );

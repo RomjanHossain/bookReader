@@ -3,10 +3,12 @@ import 'package:knowyourbook/Screens/swapTrand/bookmarks.dart';
 import 'package:knowyourbook/Screens/swapTrand/books.dart';
 import 'package:knowyourbook/Screens/swapTrand/profile.dart';
 import 'package:knowyourbook/Screens/swapTrand/topGrowsing.dart';
+import 'package:knowyourbook/Widgets/Custordrawer.dart';
 import 'package:knowyourbook/Widgets/bottomNavBar.dart';
 import 'package:line_icons/line_icons.dart';
 
 class MyHomePage extends StatefulWidget {
+  static const String id = 'homepage';
   static List<Widget> myPages = [
     HomePage(),
     TopGrow(),
@@ -42,13 +44,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: CustomDrawer(),
+      ),
       appBar: AppBar(
         title: _titles[_selectedIndex],
         centerTitle: true,
-        leading: Icon(
-          LineIcons.navicon,
-          color: Colors.black,
-          size: 30,
+        leading: Builder(
+          builder: (context) => IconButton(
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            icon: Icon(
+              LineIcons.navicon,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
         ),
         actions: _selectedIndex == 3
             ? []

@@ -20,83 +20,164 @@ class _BookViewState extends State<BookView> {
             icon: Icon(Icons.navigate_before, color: Colors.black),
             onPressed: () => Navigator.pop(context)),
       ),
-      body: Scrollbar(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Moonwalking with Erick',
-                style: TextStyle(color: Colors.black, fontSize: 25)),
-            Hero(
-              tag: '_book' + widget.index.toString(),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: Image.asset(
-                  'images/pro.jpg',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  height: 300,
-                  // width: 250,
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('Moonwalking with Erick',
+              style: TextStyle(color: Colors.black, fontSize: 25)),
+          Hero(
+            tag: '_book' + widget.index.toString(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              child: Image.asset(
+                'images/pro.jpg',
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                height: 300,
+                // width: 250,
               ),
             ),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: Text('Edward Carey'),
-                    subtitle: Text('Author'),
-                  ),
+          ),
+          Row(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ListTile(
+                  title: Text('Edward Carey'),
+                  subtitle: Text('Author'),
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: Text('Mov 12, 2018'),
-                    subtitle: Text('Date'),
-                  ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: Text('Mov 12, 2018'),
+                  subtitle: Text('Date'),
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: Text('4.6'),
-                    subtitle: Text('RATING'),
-                  ),
+              ),
+              Expanded(
+                child: ListTile(
+                  title: Text('4.6'),
+                  subtitle: Text('RATING'),
                 ),
-              ],
+              ),
+            ],
+          ),
+          ListView(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            children: [
+              MyBtn(
+                title: 'Comedy',
+                swapActive: true,
+              ),
+              MyBtn(
+                title: 'Romanctic',
+                swapActive: true,
+              ),
+              MyBtn(
+                title: 'Sci-fi',
+                swapActive: true,
+              ),
+              MyBtn(
+                title: 'Historical',
+                swapActive: true,
+              ),
+              MyBtn(
+                title: 'Drama',
+                swapActive: true,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MyBookDetailView extends StatelessWidget {
+  const MyBookDetailView({
+    Key key,
+    @required this.widget,
+  }) : super(key: key);
+
+  final BookView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Moonwalking with Erick',
+            style: TextStyle(color: Colors.black, fontSize: 25)),
+        Hero(
+          tag: '_book' + widget.index.toString(),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            child: Image.asset(
+              'images/pro.jpg',
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              height: 300,
+              // width: 250,
+            ),
+          ),
+        ),
+        Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text('Edward Carey'),
+                subtitle: Text('Author'),
+              ),
             ),
             Expanded(
-                child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                MyBtn(
-                  title: 'Comedy',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Romanctic',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Sci-fi',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Historical',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Drama',
-                  swapActive: true,
-                ),
-              ],
-            )),
-            Container(
-              color: Colors.red,
-              height: 900,
+              child: ListTile(
+                title: Text('Mov 12, 2018'),
+                subtitle: Text('Date'),
+              ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: Text('4.6'),
+                subtitle: Text('RATING'),
+              ),
             ),
           ],
         ),
-      ),
+        ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            MyBtn(
+              title: 'Comedy',
+              swapActive: true,
+            ),
+            MyBtn(
+              title: 'Romanctic',
+              swapActive: true,
+            ),
+            MyBtn(
+              title: 'Sci-fi',
+              swapActive: true,
+            ),
+            MyBtn(
+              title: 'Historical',
+              swapActive: true,
+            ),
+            MyBtn(
+              title: 'Drama',
+              swapActive: true,
+            ),
+          ],
+        ),
+        Container(
+          color: Colors.red,
+          height: 900,
+        ),
+      ],
     );
   }
 }

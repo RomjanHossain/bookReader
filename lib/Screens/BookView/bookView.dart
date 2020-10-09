@@ -20,9 +20,10 @@ class _BookViewState extends State<BookView> {
             icon: Icon(Icons.navigate_before, color: Colors.black),
             onPressed: () => Navigator.pop(context)),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text('Moonwalking with Erick',
               style: TextStyle(color: Colors.black, fontSize: 25)),
@@ -63,31 +64,39 @@ class _BookViewState extends State<BookView> {
               ),
             ],
           ),
-          ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children: [
-              MyBtn(
-                title: 'Comedy',
-                swapActive: true,
-              ),
-              MyBtn(
-                title: 'Romanctic',
-                swapActive: true,
-              ),
-              MyBtn(
-                title: 'Sci-fi',
-                swapActive: true,
-              ),
-              MyBtn(
-                title: 'Historical',
-                swapActive: true,
-              ),
-              MyBtn(
-                title: 'Drama',
-                swapActive: true,
-              ),
-            ],
+          SizedBox(
+            height: 60,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              children: [
+                MyBtn(
+                  title: 'Comedy',
+                  swapActive: true,
+                ),
+                MyBtn(
+                  title: 'Romanctic',
+                  swapActive: true,
+                ),
+                MyBtn(
+                  title: 'Sci-fi',
+                  swapActive: true,
+                ),
+                MyBtn(
+                  title: 'Historical',
+                  swapActive: true,
+                ),
+                MyBtn(
+                  title: 'Drama',
+                  swapActive: true,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            color: Colors.red,
+            height: 900,
           ),
         ],
       ),

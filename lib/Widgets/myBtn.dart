@@ -70,3 +70,37 @@ class KSmallBtn extends StatelessWidget {
     );
   }
 }
+
+class KReadBtn extends StatelessWidget {
+  KReadBtn({@required this.onpressed, @required this.title});
+  final Function onpressed;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 15,
+            offset: Offset(2, 2), // changes position of shadow
+          ),
+        ],
+        color: Colors.white,
+      ),
+      child: MaterialButton(
+        onPressed: onpressed,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.deepOrangeAccent,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 25),
+      ),
+    );
+  }
+}

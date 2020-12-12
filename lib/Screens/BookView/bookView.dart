@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
+import 'package:knowyourbook/services/readBook/readFromAsset.dart';
 
 class BookView extends StatefulWidget {
   static const String id = 'bookPage';
@@ -10,6 +11,8 @@ class BookView extends StatefulWidget {
 }
 
 class _BookViewState extends State<BookView> {
+  ReadBookFromAsset _readasset = ReadBookFromAsset();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +25,16 @@ class _BookViewState extends State<BookView> {
       ),
       floatingActionButton: KReadBtn(
         onpressed: () {
+          //! read Book function goes here!
           print('hol');
+          _readasset.openBook();
         },
         title: 'READ',
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: ListView(
         scrollDirection: Axis.vertical,
-
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
+        physics: BouncingScrollPhysics(),
         children: [
           Padding(
             padding: EdgeInsets.symmetric(
@@ -117,6 +120,7 @@ class _BookViewState extends State<BookView> {
           ),
           Container(
             padding: EdgeInsets.all(30),
+            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -144,11 +148,12 @@ class _BookViewState extends State<BookView> {
                     height: 15,
                   ),
                   Text(
-                      "Moonwalking witjfl;ksadjflkasjdfl;kasjdfl;kasjdflkasdjfl;kasjdfl;kasjdf;slakjdfls;akjdfl;sakdjfl;aksdjfl;aksdjl;fkasjdl;kfjash Einstein: The Art and Science of ...www.amazon.com › Moonwalking-Einstein-Science-Re...An instant bestseller that is poised to become a classic, Moonwalking with Einstein recounts Joshua Foer's yearlong quest to improve his memory under the tutelage of top mental athletes He draws on cutting-edge research, a surprising cultural history of remembering, and venerable tricks of the mentalist's trade to",
-                      style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 1,
-                      )),
+                    "Moonwalking witjfl;ksadjflkasjdfl;kasjdfl;kasjdflkasdjfl;kasjdfl;kasjdf;slakjdfls;akjdfl;sakdjfl;aksdjfl;aksdjl;fkasjdl;kfjash Einstein: The Art and Science of ...www.amazon.com › Moonwalking-Einstein-Science-Re...An instant bestseller that is poised to become a classic, Moonwalking with Einstein recounts Joshua Foer's yearlong quest to improve his memory under the tutelage of top mental athletes He draws on cutting-edge research, a surprising cultural history of remembering, and venerable tricks of the mentalist's trade to",
+                    style: TextStyle(
+                      fontSize: 16,
+                      letterSpacing: 1,
+                    ),
+                  ),
                 ],
               ),
             ),

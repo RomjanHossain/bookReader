@@ -17,29 +17,51 @@ class _BookMarksState extends State<BookMarks> {
         Expanded(
           child: Align(
             alignment: Alignment.topRight,
-            child: DropdownButton<String>(
-              value: dropdownValue,
-              iconSize: 24,
-              elevation: 16,
-              style: TextStyle(color: Colors.deepPurple),
-              onChanged: (String newValue) {
-                setState(() {
-                  dropdownValue = newValue;
-                });
-              },
-              items: <String>['name', 'Two', 'Free', 'Four']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            child: Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.blue,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 15,
+                    offset: Offset(-4, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  iconSize: 24,
+                  elevation: 16,
+                  style: TextStyle(color: Colors.deepPurple),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>['name', 'Two', 'Free', 'Four']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
           ),
         ),
         Expanded(
           flex: 9,
           child: StaggeredGridView.countBuilder(
+            physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
                 height: 300,

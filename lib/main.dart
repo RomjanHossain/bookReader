@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
+import 'package:knowyourbook/Screens/ordered/orderPage.dart';
+import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
       routes: {
         MyHomePage.id: (context) => MyHomePage(),
         BookView.id: (context) => BookView(),
+        UpLoadPage.id: (context) => UpLoadPage(),
+        OrderPage.id: (context) => OrderPage(),
       },
     );
   }

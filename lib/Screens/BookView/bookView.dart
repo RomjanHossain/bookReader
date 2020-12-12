@@ -93,7 +93,7 @@ class _BookViewState extends State<BookView> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               children: [
                 MyBtn(
                   title: 'Comedy',

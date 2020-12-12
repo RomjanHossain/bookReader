@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Screens/ordered/orderPage.dart';
+import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -69,6 +71,7 @@ class ProfileW extends StatelessWidget {
                   title: Text('Uploaded'),
                   subtitle: Text('0'),
                   trailing: Icon(Icons.navigate_next),
+                  onTap: () => Navigator.pushNamed(context, UpLoadPage.id),
                 ),
               ),
               Card(
@@ -77,6 +80,7 @@ class ProfileW extends StatelessWidget {
                   title: Text('Ordered'),
                   subtitle: Text('0'),
                   trailing: Icon(Icons.navigate_next),
+                  onTap: () => Navigator.pushNamed(context, OrderPage.id),
                 ),
               ),
               MyBtn(

@@ -88,7 +88,6 @@ class _HomePageState extends State<HomePage> {
             child: TabBar(
               isScrollable: true,
               indicatorColor: Colors.transparent,
-              // indicatorSize: TabBarIndicatorSize.label,
               onTap: (int lol) {
                 setState(() {
                   _number = lol;
@@ -118,9 +117,11 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 8,
             child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: [
-                // new Books
+                //? new Books
                 StaggeredGridView.countBuilder(
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () => Navigator.push(
@@ -154,8 +155,9 @@ class _HomePageState extends State<HomePage> {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
-                // most popular
+                //? most popular
                 StaggeredGridView.countBuilder(
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
@@ -187,8 +189,9 @@ class _HomePageState extends State<HomePage> {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
-                // Tranding
+                //? Tranding
                 StaggeredGridView.count(
+                  physics: BouncingScrollPhysics(),
                   crossAxisCount: 4,
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   children: books,
@@ -197,8 +200,9 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSpacing: 12,
                   staggeredTiles: mystaggeredTiles,
                 ),
-                // requested
+                //? requested
                 StaggeredGridView.count(
+                  physics: BouncingScrollPhysics(),
                   crossAxisCount: 2,
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   children: books,

@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:knowyourbook/Screens/swapTrand/bookmarks.dart';
-import 'package:knowyourbook/Screens/swapTrand/books.dart';
-import 'package:knowyourbook/Screens/swapTrand/profile.dart';
-import 'package:knowyourbook/Screens/swapTrand/topGrowsing.dart';
+import 'package:knowyourbook/Screens/swapTrand/Bookmark/bookmarks.dart';
+import 'package:knowyourbook/Screens/swapTrand/Home/books.dart';
+import 'package:knowyourbook/Screens/swapTrand/Profile/profile.dart';
+import 'package:knowyourbook/Screens/swapTrand/TopGrowsing/topGrowsing.dart';
 import 'package:knowyourbook/Widgets/Custordrawer.dart';
 import 'package:knowyourbook/Widgets/bottomNavBar.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   static const String id = 'homepage';
@@ -44,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var _user = Provider.of<User>(context);
     return Scaffold(
       drawer: Drawer(
         child: CustomDrawer(),

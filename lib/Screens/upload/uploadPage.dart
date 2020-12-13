@@ -5,6 +5,12 @@ class UpLoadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print('add btn clicked');
+          },
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(

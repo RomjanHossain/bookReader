@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-// const kBoxNumberbig = TextStyle();
-// const kBoxNumbersmall =  Card(
-
-// );
 const kTitle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.w400,
@@ -20,3 +16,5 @@ const kSubtitle = TextStyle(
 kToggleSwap(val) {
   val ? val = !val : val = !val;
 }
+
+const tabbarTextColor = TextStyle(color: Colors.black);

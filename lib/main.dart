@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<User>.value(value: AuthServices().user),
+        Provider(create: (context) => AuthServices()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

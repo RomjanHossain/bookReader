@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Widgets/myBtn.dart';
+import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var _user = Provider.of<User>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -11,25 +16,37 @@ class CustomDrawer extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('images/bg.jpg'),
-              fit: BoxFit.cover,
-            )),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg'),
-                  radius: 70,
-                ),
-                Text(
-                  'Romjan D. Hossain',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ],
+              image: DecorationImage(
+                image: AssetImage('images/bg.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
+            child: (Provider.of<User>(context) != null)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          _user.photoURL,
+                        ),
+                        radius: 70,
+                      ),
+                      Text(
+                        _user.displayName,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: MyBtn(
+                      title: 'Log in',
+                      swapActive: true,
+                      toggleSwap: () async {
+                        await Provider.of<AuthServices>(context).googleSignIn();
+                      },
+                    ),
+                  ),
           ),
         ),
         Expanded(

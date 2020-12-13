@@ -1,29 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
 import 'package:knowyourbook/Screens/ordered/orderPage.dart';
 import 'package:knowyourbook/Screens/upload/uploadPage.dart';
+import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(value: AuthServices().user),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            color: Colors.white,
+          ),
         ),
+        initialRoute: MyHomePage.id,
+        routes: {
+          MyHomePage.id: (context) => MyHomePage(),
+          BookView.id: (context) => BookView(),
+          UpLoadPage.id: (context) => UpLoadPage(),
+          OrderPage.id: (context) => OrderPage(),
+        },
       ),
-      initialRoute: MyHomePage.id,
-      routes: {
-        MyHomePage.id: (context) => MyHomePage(),
-        BookView.id: (context) => BookView(),
-        UpLoadPage.id: (context) => UpLoadPage(),
-        OrderPage.id: (context) => OrderPage(),
-      },
     );
   }
 }

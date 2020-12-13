@@ -5,6 +5,7 @@ import 'package:knowyourbook/Screens/swapTrand/profile.dart';
 import 'package:knowyourbook/Screens/swapTrand/topGrowsing.dart';
 import 'package:knowyourbook/Widgets/Custordrawer.dart';
 import 'package:knowyourbook/Widgets/bottomNavBar.dart';
+import 'package:knowyourbook/values/const.dart';
 import 'package:line_icons/line_icons.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -25,19 +26,19 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Text> _titles = [
     Text(
       'All Books',
-      style: TextStyle(color: Colors.black),
+      style: tabbarTextColor,
     ),
     Text(
       'Top Growsing',
-      style: TextStyle(color: Colors.black),
+      style: tabbarTextColor,
     ),
     Text(
       'Bookmarks',
-      style: TextStyle(color: Colors.black),
+      style: tabbarTextColor,
     ),
     Text(
       'Profile',
-      style: TextStyle(color: Colors.black),
+      style: tabbarTextColor,
     ),
   ];
 

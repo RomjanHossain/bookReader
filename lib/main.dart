@@ -6,6 +6,7 @@ import 'package:knowyourbook/Screens/homeScreen.dart';
 import 'package:knowyourbook/Screens/ordered/orderPage.dart';
 import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       providers: [
         StreamProvider<User>.value(value: AuthServices().user),
         Provider(create: (context) => AuthServices()),
+        Provider(create: (context) => FirebaseStorageService()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

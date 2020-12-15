@@ -31,7 +31,7 @@ class _BookViewState extends State<BookView> {
         },
         title: 'READ',
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: ListView(
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),

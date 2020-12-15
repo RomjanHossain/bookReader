@@ -43,7 +43,9 @@ class CustomDrawer extends StatelessWidget {
                       title: 'Log in',
                       swapActive: true,
                       toggleSwap: () async {
-                        await Provider.of<AuthServices>(context).googleSignIn();
+                        print('pressed log in');
+                        await Provider.of<AuthServices>(context, listen: false)
+                            .googleSignIn();
                       },
                     ),
                   ),
@@ -56,6 +58,7 @@ class CustomDrawer extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             // color: Colors.blue,
             child: ListView(
+              physics: BouncingScrollPhysics(),
               children: [
                 Text('Category'),
                 ListTile(
@@ -155,7 +158,19 @@ class CustomDrawer extends StatelessWidget {
                     SizedBox(
                       width: 20,
                     ),
-                    Text('Help and Feedback'),
+                    GestureDetector(
+                      onTap: () {
+                        showAboutDialog(
+                            context: context,
+                            applicationName: 'Know YOUR book',
+                            applicationVersion: 'v0.0.1 (Beta Version)',
+                            applicationLegalese:
+                                '''This is a beta app for testing purposes! if you find any issue with this application, you can mail me at `romjanhossain726526@gmail.com`!
+                              ''');
+//                         );
+                      },
+                      child: Text('View Licence'),
+                    ),
                   ],
                 ),
               ],

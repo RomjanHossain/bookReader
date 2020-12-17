@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,9 @@ class _UpLoadPageState extends State<UpLoadPage> {
                         await Provider.of<FirebaseStorageService>(context,
                                 listen: false)
                             .uploadFile(_file, user)
-                            .then((_) {
+                            .then((String bookid) {
+                          Provider.of<AuthServices>(context, listen: false)
+                              .userUploaded(bookid, user);
                           var snackBar = _ownBar('Uploaded', Colors.green);
                           _globalKey.currentState.showSnackBar(snackBar);
                           setState(() {
@@ -116,7 +119,9 @@ class _UpLoadPageState extends State<UpLoadPage> {
             Icons.navigate_before,
             color: Colors.black,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _isUploading ? print('') : Navigator.pop(context);
+          },
         ),
         centerTitle: true,
         title: Text(

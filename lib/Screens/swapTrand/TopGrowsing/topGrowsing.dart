@@ -49,6 +49,7 @@ class _TopGrowState extends State<TopGrow> {
           Expanded(
             flex: 8,
             child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 ListView.builder(
                   itemCount: 10,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/services/firebase/storage.dart';
+import 'package:provider/provider.dart';
 
 class OrderPage extends StatelessWidget {
   static const String id = 'order';
@@ -21,8 +23,48 @@ class OrderPage extends StatelessWidget {
             ),
           ),
         ),
-        body: Center(
-          child: Text('Empty'),
+        body: ListView(
+          children: [
+            Text(
+              '\nEmpty',
+              textAlign: TextAlign.center,
+            ),
+            FlatButton.icon(
+              color: Colors.green,
+              onPressed: () async {
+                print('hu');
+                await Provider.of<FirebaseStorageService>(context,
+                        listen: false)
+                    .listExample();
+              },
+              icon: Icon(Icons.home),
+              label: Text('get all Dir+file'),
+            ),
+            FlatButton.icon(
+              color: Colors.green,
+              onPressed: () async {
+                print('hu');
+              },
+              icon: Icon(Icons.person),
+              label: Text('account counts'),
+            ),
+            FlatButton.icon(
+              color: Colors.green,
+              onPressed: () {
+                print('hu');
+              },
+              icon: Icon(Icons.home),
+              label: Text('holy'),
+            ),
+            FlatButton.icon(
+              color: Colors.green,
+              onPressed: () {
+                print('hu');
+              },
+              icon: Icon(Icons.home),
+              label: Text('holy'),
+            )
+          ],
         ));
   }
 }

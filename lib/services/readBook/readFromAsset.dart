@@ -4,8 +4,7 @@ import 'package:epub_viewer/epub_viewer.dart';
 class ReadBookFromAsset {
   openBook() async {
     EpubViewer.setConfig(
-        // themeColor: Theme.of(context).primaryColor,
-        identifier: "iosBook",
+        identifier: "Book",
         scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
         allowSharing: true,
         enableTts: true,

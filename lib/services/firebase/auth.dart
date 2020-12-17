@@ -32,6 +32,8 @@ class AuthServices {
       );
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
+
+      accountCounts(userCredential.user);
       createUserData(userCredential.user);
       return userCredential.user;
     } catch (e) {
@@ -40,20 +42,66 @@ class AuthServices {
     }
   }
 
+// setted first user values
   Future<void> createUserData(User user) {
-    DocumentReference reportRef = _db.collection('reports').doc(user.uid);
-    return reportRef.set(
+    DocumentReference userRef = _db.collection('Users').doc(user.uid);
+
+    return userRef.set(
       {
         'uid': user.uid,
         'isAdmin': false,
         'userEmail': user.email,
         'User Name': user.displayName,
         'user Photo': user.photoURL,
-        'user Number': user.phoneNumber,
+      },
+    );
+  }
+
+  //? account counts
+  Future<void> accountCounts(User user) async {
+    DocumentReference _ac = _db.collection('Account Count').doc('total');
+    var _acU = await _ac.get().then((value) => value.data().values.first);
+
+    Future<int> value = _db.collection('Account Count').snapshots().length;
+    if (await value != null) {
+      _ac.update({'total': value});
+      print('this is _acU\n $value');
+    }
+
+    DocumentReference accountRef =
+        _db.collection('Account Count').doc(user.uid);
+    print('this is _acU\n $_acU');
+    return accountRef.set(
+      {
+        'uid': user.uid,
+        'userEmail': user.email,
+        'User Name': user.displayName,
+        'account number': _acU,
         'created': timeCreated,
         'lastActive': DateTime.now(),
       },
     );
+  }
+
+  //! All the user collections are here
+  Future<void> userReaded(String bookid, User user) async {
+    _db.doc('Users').collection('Readed').doc(bookid);
+  }
+
+  Future<void> userViewd(String bookid, User user) async {
+    _db.doc('Users').collection('Viewed').doc(bookid);
+  }
+
+  Future<void> userUploaded(String bookid, User user) async {
+    _db.doc('Users').collection('Uploaded').doc(bookid);
+  }
+
+  Future<void> userOrdered(String bookid, User user) async {
+    _db.doc('Users').collection('Ordered').doc(bookid);
+  }
+
+  Future<void> userBookmarked(String bookid, User user) async {
+    _db.doc('Users').collection('Bookmarked').doc(bookid);
   }
 
   //! signout

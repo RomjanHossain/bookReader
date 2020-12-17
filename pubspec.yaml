@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   cloud_firestore: ^0.14.4
   cupertino_icons: ^1.0.0
+  epub: ^2.1.0
   epub_viewer: ^0.1.9
   file_picker: ^2.1.4
   firebase_auth: ^0.18.4+1

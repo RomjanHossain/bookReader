@@ -85,23 +85,23 @@ class AuthServices {
 
   //! All the user collections are here
   Future<void> userReaded(String bookid, User user) async {
-    _db.doc('Users').collection('Readed').doc(bookid);
+    return _db.doc('Users').collection('Readed').doc(bookid);
   }
 
   Future<void> userViewd(String bookid, User user) async {
-    _db.doc('Users').collection('Viewed').doc(bookid);
+    return _db.doc('Users').collection('Viewed').doc(bookid);
   }
 
   Future<void> userUploaded(String bookid, User user) async {
-    _db.doc('Users').collection('Uploaded').doc(bookid);
+    return _db.doc('Users').collection('Uploaded').doc(bookid);
   }
 
   Future<void> userOrdered(String bookid, User user) async {
-    _db.doc('Users').collection('Ordered').doc(bookid);
+    return _db.doc('Users').collection('Ordered').doc(bookid);
   }
 
   Future<void> userBookmarked(String bookid, User user) async {
-    _db.doc('Users').collection('Bookmarked').doc(bookid);
+    return _db.doc('Users').collection('Bookmarked').doc(bookid);
   }
 
   //! signout

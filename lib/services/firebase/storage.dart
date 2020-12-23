@@ -35,6 +35,12 @@ class FirebaseStorageService {
     return _randomName;
   }
 
+//? download url
+  Future<String> downloadURL(String uid, String name) async {
+    String downloadURL = await storage.ref('$uid/$name.epub').getDownloadURL();
+    return downloadURL;
+  }
+
   //? get all the dir+file name
   Future<void> listExample() async {
     // firebase_storage.ListResult result = await storage.ref().ge();

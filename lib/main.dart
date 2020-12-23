@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
 import 'package:knowyourbook/Screens/ordered/orderPage.dart';
+import 'package:knowyourbook/Screens/upload/realUpPage.dart';
 import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
         StreamProvider<User>.value(value: AuthServices().user),
         Provider(create: (context) => AuthServices()),
         Provider(create: (context) => FirebaseStorageService()),
+        Provider(create: (context) => DatabaseService()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
           BookView.id: (context) => BookView(),
           UpLoadPage.id: (context) => UpLoadPage(),
           OrderPage.id: (context) => OrderPage(),
+          RealUpPage.id: (context) => RealUpPage(),
         },
       ),
     );

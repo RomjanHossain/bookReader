@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:knowyourbook/Screens/upload/realUpPage.dart';
+import 'package:knowyourbook/Screens/upload/uploadForm.dart';
 
 enum tags { harder, smarter, selfStarter, tradingCharter }
 

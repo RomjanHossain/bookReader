@@ -31,19 +31,31 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
 enum Category {
   Action,
   Adventure,
+  Biography,
   Classics,
+  Cultural,
   Detective,
   Mystery,
+  Novels,
   Fantasy,
   Historical,
   Horror,
   Literacy,
+  Poetry,
   Romance,
+  Religion,
+  Psychology,
+  Philosophy,
+  Science,
+  Selfhelp,
   Short,
+  Social,
   Suspense,
   Thrillers,
-  Women,
-  Adult
+  Feminism,
+  Adult,
+  Womens,
+  ScienceFiction,
 }
 //? snak bar
 SnackBar kownBar(String txt, Color col) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
 import 'package:knowyourbook/Screens/ordered/orderPage.dart';
-import 'package:knowyourbook/Screens/upload/realUpPage.dart';
+import 'package:knowyourbook/Screens/upload/uploadForm.dart';
 import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/database.dart';

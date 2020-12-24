@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
@@ -15,8 +14,7 @@ class RealUpPage extends StatefulWidget {
 }
 
 class _RealUpPageState extends State<RealUpPage> {
-  String _bookName;
-  String _bookDescription;
+  String _bookName, _bookDescription;
   List<String> _bookCatagory = [];
   bool _isUploading = false;
   final _globalKey = GlobalKey<ScaffoldState>();
@@ -44,12 +42,26 @@ class _RealUpPageState extends State<RealUpPage> {
             color: Colors.black,
           ),
           onPressed: () {
-            _isUploading ? print('') : Navigator.pop(context);
+            _isUploading ? print('uploading') : Navigator.pop(context);
           },
         ),
       ),
       body: _isUploading
-          ? LinearProgressIndicator()
+          ? Stack(
+              children: [
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: LinearProgressIndicator()),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text('wait til its done....!',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      )),
+                )
+              ],
+            )
           : Form(
               key: _formKey,
               child: Column(
@@ -67,13 +79,7 @@ class _RealUpPageState extends State<RealUpPage> {
                           vertical: 20,
                         ),
                         child: TextFormField(
-                          onSaved: (value) {
-                            print(value);
-                            setState(() {
-                              _bookName = value;
-                              print('book name $_bookName');
-                            });
-                          },
+                          onSaved: (txt) => _bookName = txt,
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Please enter some text';
@@ -109,13 +115,7 @@ class _RealUpPageState extends State<RealUpPage> {
                           horizontal: 20,
                         ),
                         child: TextFormField(
-                          onSaved: (value) {
-                            print(value);
-                            setState(() {
-                              _bookDescription = value;
-                              print('book description $_bookDescription');
-                            });
-                          },
+                          onSaved: (txt) => _bookDescription = txt,
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Please enter some text';
@@ -172,7 +172,10 @@ class _RealUpPageState extends State<RealUpPage> {
                                 icon: Icon(Icons.add),
                                 onSelected: (Category result) {
                                   setState(() {
-                                    _bookCatagory.add('$result');
+                                    _bookCatagory.add(
+                                      result.toString().substring(
+                                          result.toString().indexOf('.') + 1),
+                                    );
                                     _listofCat.add(
                                       Padding(
                                         padding:
@@ -210,8 +213,16 @@ class _RealUpPageState extends State<RealUpPage> {
                                     child: Text('Adult'),
                                   ),
                                   const PopupMenuItem<Category>(
+                                    value: Category.Biography,
+                                    child: Text('Biography'),
+                                  ),
+                                  const PopupMenuItem<Category>(
                                     value: Category.Classics,
                                     child: Text('Classics'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Cultural,
+                                    child: Text('Cultural'),
                                   ),
                                   const PopupMenuItem<Category>(
                                     value: Category.Detective,
@@ -238,12 +249,44 @@ class _RealUpPageState extends State<RealUpPage> {
                                     child: Text('Mystery'),
                                   ),
                                   const PopupMenuItem<Category>(
+                                    value: Category.Novels,
+                                    child: Text('Novels'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Poetry,
+                                    child: Text('Poetry'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Psychology,
+                                    child: Text('Psychology'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Philosophy,
+                                    child: Text('Philosophy'),
+                                  ),
+                                  const PopupMenuItem<Category>(
                                     value: Category.Romance,
                                     child: Text('Romance'),
                                   ),
                                   const PopupMenuItem<Category>(
+                                    value: Category.Religion,
+                                    child: Text('Religion'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Science,
+                                    child: Text('Science'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Selfhelp,
+                                    child: Text('Self-help'),
+                                  ),
+                                  const PopupMenuItem<Category>(
                                     value: Category.Short,
                                     child: Text('Short'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Social,
+                                    child: Text('Social'),
                                   ),
                                   const PopupMenuItem<Category>(
                                     value: Category.Suspense,
@@ -254,8 +297,16 @@ class _RealUpPageState extends State<RealUpPage> {
                                     child: Text('Thrillers'),
                                   ),
                                   const PopupMenuItem<Category>(
-                                    value: Category.Women,
-                                    child: Text('Women Friction'),
+                                    value: Category.Feminism,
+                                    child: Text('Feminism'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.Womens,
+                                    child: Text('Womens'),
+                                  ),
+                                  const PopupMenuItem<Category>(
+                                    value: Category.ScienceFiction,
+                                    child: Text('Science Fiction'),
                                   ),
                                 ],
                               ),
@@ -271,13 +322,15 @@ class _RealUpPageState extends State<RealUpPage> {
                                       listen: false)
                                   .pickFile();
                           if (_file != null) {
-                            setState(() {
-                              _epub = _file;
-                            });
+                            _epub = _file;
+                            // setState(() {
+                            //   _epub = _file;
+                            // });
                           } else {
                             //? user cancelled
                             var snackBar = kownBar('Canceled', Colors.red);
                             _globalKey.currentState.showSnackBar(snackBar);
+                            // Navigator.pop(context);
                           }
                         },
                         child: Center(
@@ -325,6 +378,8 @@ class _RealUpPageState extends State<RealUpPage> {
                         if (_formKey.currentState.validate() &&
                             _bookCatagory.isNotEmpty &&
                             _epub != null) {
+                          _formKey.currentState.save();
+
                           setState(() {
                             _isUploading = true;
                           });
@@ -332,27 +387,30 @@ class _RealUpPageState extends State<RealUpPage> {
                                   listen: false)
                               .uploadFile(_epub, user)
                               .then((String bookid) async {
-                            Provider.of<AuthServices>(context, listen: false)
+                            await Provider.of<AuthServices>(context,
+                                    listen: false)
                                 .userUploaded(bookid, user);
-                            String _dl =
-                                await Provider.of<FirebaseStorageService>(
-                                        context)
-                                    .downloadURL(user.uid, bookid);
-                            Provider.of<DatabaseService>(context, listen: false)
-                                .allbook(
+
+                            await Provider.of<DatabaseService>(context,
+                                    listen: false)
+                                .initBook(
                               bookid,
-                              user,
                               _bookName,
                               _bookDescription,
                               _bookCatagory,
-                              _dl,
+                              await Provider.of<FirebaseStorageService>(context,
+                                      listen: false)
+                                  .downloadURL(user.uid, bookid),
                             );
+
                             var snackBar = kownBar('Uploaded', Colors.green);
                             _globalKey.currentState.showSnackBar(snackBar);
+
                             setState(() {
                               _isUploading = false;
                             });
-                            Navigator.pop(context);
+                            Future.delayed(Duration(seconds: 1),
+                                () => Navigator.pop(context));
                           });
                         }
                       },

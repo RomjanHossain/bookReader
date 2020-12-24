@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -26,7 +25,7 @@ class FirebaseStorageService {
 
   //? 2. upload file
   Future<String> uploadFile(File file, User user) async {
-    String _randomName = getRandomString(10);
+    String _randomName = getRandomString(20);
     try {
       await storage.ref('${user.uid}/$_randomName.epub').putFile(file);
     } catch (e) {

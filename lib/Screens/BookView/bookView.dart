@@ -1,11 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:knowyourbook/services/readBook/readFromAsset.dart';
 
 class BookView extends StatefulWidget {
   static const String id = 'bookPage';
-  BookView({this.index});
-  final int index;
+  BookView({
+    this.bookid,
+    this.des,
+    this.author,
+    this.buy,
+    this.date,
+    this.link,
+    this.name,
+    this.cat,
+    this.uploader,
+    this.rate,
+  });
+  final String bookid, des, author, name, link, uploader;
+  final double rate;
+  final Timestamp date;
+  final bool buy;
+  final List<dynamic> cat;
+
   @override
   _BookViewState createState() => _BookViewState();
 }
@@ -15,6 +33,8 @@ class _BookViewState extends State<BookView> {
 
   @override
   Widget build(BuildContext context) {
+    var _date = DateFormat.yMMMd().format(
+        DateTime.fromMillisecondsSinceEpoch(widget.date.seconds * 1000));
     return Scaffold(
       appBar: AppBar(
         title: Text('book', style: TextStyle(color: Colors.black)),
@@ -40,18 +60,38 @@ class _BookViewState extends State<BookView> {
             padding: EdgeInsets.symmetric(
               vertical: 15,
             ),
-            child: Column(
-              children: [
-                Text('Moonwalking with Erick',
-                    style: TextStyle(color: Colors.black, fontSize: 25)),
-                Text('by Albert Manson'),
-              ],
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                ),
+                children: [
+                  TextSpan(
+                    text: '${widget.name}\n',
+                  ),
+                  TextSpan(
+                    text: 'uploaded by\t',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '${widget.uploader}',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 40),
             child: Hero(
-              tag: '_book' + widget.index.toString(),
+              tag: widget.bookid,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: Image.asset(
@@ -70,19 +110,19 @@ class _BookViewState extends State<BookView> {
             children: [
               Expanded(
                 child: ListTile(
-                  title: Text('Edward Carey'),
+                  title: Text('${widget.author}'),
                   subtitle: Text('Author'),
                 ),
               ),
               Expanded(
                 child: ListTile(
-                  title: Text('Mov 12, 2018'),
+                  title: Text('$_date'),
                   subtitle: Text('Date'),
                 ),
               ),
               Expanded(
                 child: ListTile(
-                  title: Text('4.6'),
+                  title: Text('${widget.rate}'),
                   subtitle: Text('RATING'),
                 ),
               ),
@@ -95,26 +135,11 @@ class _BookViewState extends State<BookView> {
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               children: [
-                MyBtn(
-                  title: 'Comedy',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Romanctic',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Sci-fi',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Historical',
-                  swapActive: true,
-                ),
-                MyBtn(
-                  title: 'Drama',
-                  swapActive: true,
-                ),
+                for (dynamic ca in widget.cat)
+                  MyBtn(
+                    title: ca.toString(),
+                    swapActive: true,
+                  )
               ],
             ),
           ),
@@ -148,7 +173,7 @@ class _BookViewState extends State<BookView> {
                     height: 15,
                   ),
                   Text(
-                    "Moonwalking witjfl;ksadjflkasjdfl;kasjdfl;kasjdflkasdjfl;kasjdfl;kasjdf;slakjdfls;akjdfl;sakdjfl;aksdjfl;aksdjl;fkasjdl;kfjash Einstein: The Art and Science of ...www.amazon.com › Moonwalking-Einstein-Science-Re...An instant bestseller that is poised to become a classic, Moonwalking with Einstein recounts Joshua Foer's yearlong quest to improve his memory under the tutelage of top mental athletes He draws on cutting-edge research, a surprising cultural history of remembering, and venerable tricks of the mentalist's trade to",
+                    "${widget.des}",
                     style: TextStyle(
                       fontSize: 16,
                       letterSpacing: 1,

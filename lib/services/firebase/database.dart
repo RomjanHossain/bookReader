@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:async';
 
@@ -10,16 +11,16 @@ class DatabaseService {
   int nums;
 
   //! all book releated database is here!
-  Future<void> initBook(String bookid, String name, String des,
+  Future<void> initBook(User user, String bookid, String name, String des,
       List<String> cat, String file) async {
-    await allbook(bookid, name, des, cat, file);
+    await allbook(user, bookid, name, des, cat, file);
     await views(bookid);
     await catagory(bookid, cat, name);
     return true;
   }
 
-  Future<void> allbook(String bookid, String name, String des, List<String> cat,
-      String file) async {
+  Future<void> allbook(User user, String bookid, String name, String des,
+      List<String> cat, String file) async {
     DocumentReference _allbook = _db.collection('All Book').doc(bookid);
     return _allbook.set(
       {
@@ -39,6 +40,7 @@ class DatabaseService {
         'readed': 0,
         'upload Date': timeCreated,
         'rating': 0.0,
+        'uploader': user.displayName,
       },
     );
   }
@@ -64,5 +66,14 @@ class DatabaseService {
         bookid: name,
       });
     });
+  }
+
+  //! this is viewpoint for the lol
+  // here goes all the book sort by date!! //? New Books
+  Future<void> newBook() async {
+    QuerySnapshot _nb =
+        await _db.collection('All Books').orderBy('upload Date').get();
+
+    return _nb;
   }
 }

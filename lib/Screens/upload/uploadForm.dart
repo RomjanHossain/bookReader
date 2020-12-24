@@ -394,6 +394,7 @@ class _RealUpPageState extends State<RealUpPage> {
                             await Provider.of<DatabaseService>(context,
                                     listen: false)
                                 .initBook(
+                              user,
                               bookid,
                               _bookName,
                               _bookDescription,

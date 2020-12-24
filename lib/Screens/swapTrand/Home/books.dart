@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
@@ -120,41 +121,113 @@ class _HomePageState extends State<HomePage> {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 //? new Books
-                StaggeredGridView.countBuilder(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BookView(index: index))),
-                      child: Hero(
-                        tag: '_book' + index.toString(),
-                        child: Container(
-                          height: 300,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                alignment: Alignment.center,
-                                fit: BoxFit.cover,
-                                image: AssetImage('images/pro.jpg'),
-                              ),
-                              color: Colors.lightBlue,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: 10,
-                  staggeredTileBuilder: (index) {
-                    return StaggeredTile.count(1, index.isEven ? 1.5 : 1.8);
-                  },
-                  crossAxisCount: 2,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  scrollDirection: Axis.vertical,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
+                FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('All Book')
+                        .orderBy('upload Date')
+                        .get(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? StaggeredGridView.countBuilder(
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookView(
+                                        bookid: snapshot
+                                            .data.docs[index].documentID,
+                                        author: snapshot.data.docs[index]
+                                            ["author"],
+                                        buy: snapshot.data.docs[index]["buy"],
+                                        cat: snapshot.data.docs[index]
+                                            ["Categorys"],
+                                        link: snapshot.data.docs[index]
+                                            ["Download URL"],
+                                        date: snapshot.data.docs[index]
+                                            ["upload Date"],
+                                        des: snapshot.data.docs[index]
+                                            ["description"],
+                                        name: snapshot.data.docs[index]["name"],
+                                        rate: snapshot.data.docs[index]
+                                            ["rating"],
+                                        uploader: snapshot.data.docs[index]
+                                            ["uploader"],
+                                      ),
+                                    ),
+                                  ),
+                                  child: Hero(
+                                    tag: snapshot.data.docs[index].documentID,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            // height: 300,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                alignment: Alignment.center,
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                    'images/pro.jpg'),
+                                              ),
+                                              color: Colors.lightBlue,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20),
+                                                // '${snapshot.data.docs[index]["name"]}',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    '${snapshot.data.docs[index]["name"]}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount: snapshot.data.docs.length,
+                              staggeredTileBuilder: (index) {
+                                return StaggeredTile.count(
+                                  1,
+                                  index.isEven ? 1.6 : 1.8,
+                                );
+                              },
+                              crossAxisCount: 2,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              scrollDirection: Axis.vertical,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            )
+                          : Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.redAccent,
+                                  ),
+                                ),
+                              ],
+                            );
+                    }),
                 //? most popular
                 StaggeredGridView.countBuilder(
                   physics: BouncingScrollPhysics(),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:knowyourbook/services/readBook/readFromAsset.dart';
+import 'package:knowyourbook/values/const.dart';
 
 class BookView extends StatefulWidget {
   static const String id = 'bookPage';
@@ -196,7 +197,12 @@ class _BookViewState extends State<BookView> {
                 children: [
                   KReadBtn(
                     title: 'AudioBook',
-                    onpressed: null,
+                    onpressed: () async {
+                      var _name = widget.name.toString().replaceAll(' ', '+');
+
+                      String _url = _name + '+audiobook';
+                      klaunchYoutube(_url);
+                    },
                   ),
                   KReadBtn(
                     title: 'Buy Now',

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
 
@@ -69,6 +70,28 @@ SnackBar kownBar(String txt, Color col) {
       textAlign: TextAlign.center,
     ),
   );
+}
+
+//? take user to youtube!!!
+Future<void> klaunchYoutube(String bookname) async {
+  //https://www.youtube.com/results?search_query=%s
+  // final String url = 'www.youtube.com/results?search_query=$bookname';
+  String url = 'https://youtube.com/results?search_query=$bookname';
+  print(url);
+  if (await canLaunch('$url')) {
+    await launch(
+      url,
+      forceSafariVC: false,
+      universalLinksOnly: true,
+      forceWebView: false,
+    );
+  } else {
+    await launch(
+      '$url',
+      forceSafariVC: true,
+      universalLinksOnly: true,
+    );
+  }
 }
 //! upload method
 /*

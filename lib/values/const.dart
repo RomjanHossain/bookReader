@@ -93,7 +93,36 @@ Future<void> klaunchYoutube(String bookname) async {
     );
   }
 }
+
 //! upload method
+//? show
+// void showView(BuildContext context) {
+//   // set up the button
+//   Widget okButton = FlatButton(
+//     child: Text("Read"),
+//     onPressed: () {
+//       Navigator.pop(context);
+//     },
+//   );
+
+//   // set up the AlertDialog
+//   AlertDialog alert = AlertDialog(
+//     title: Text("My title"),
+//     content: Text("This is my message."),
+//     actions: [
+//       okButton,
+//     ],
+//   );
+
+//   // show the dialog
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   );
+// }
+
 /*
   void displayBottomSheet(BuildContext context, User user) {
     showGeneralDialog(

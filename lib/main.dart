@@ -9,6 +9,7 @@ import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
+import 'package:knowyourbook/services/saveBook/savebookProv.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (context) => AuthServices()),
         Provider(create: (context) => FirebaseStorageService()),
         Provider(create: (context) => DatabaseService()),
+        Provider(create: (context) => SaveBookProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

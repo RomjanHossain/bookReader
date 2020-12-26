@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:epub_viewer/epub_viewer.dart';
 
 class ReadFromDB {
-  openBook(String dir, String name) async {
+  //! first you have to save the book
+  //? save the book on chache
+  //? save the book on memory
+  //! then you have to read the book!!!
+  openBook(String url) async {
     EpubViewer.setConfig(
       identifier: "Book",
       scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
@@ -12,7 +16,7 @@ class ReadFromDB {
     );
 
     EpubViewer.open(
-      '${dir + name}',
+      '$url',
       lastLocation: EpubLocator.fromJson(
         {
           "bookId": "2239",

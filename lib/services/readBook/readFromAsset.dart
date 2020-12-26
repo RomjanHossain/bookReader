@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:epub_viewer/epub_viewer.dart';
 
 class ReadBookFromAsset {
-  openBook() async {
+  openBook(String loc) async {
     EpubViewer.setConfig(
         identifier: "Book",
         scrollDirection: EpubScrollDirection.ALLDIRECTIONS,
@@ -11,7 +11,7 @@ class ReadBookFromAsset {
         nightMode: true);
 
     await EpubViewer.openAsset(
-      'assets/book/badblood.epub',
+      loc,
       lastLocation: EpubLocator.fromJson({
         "bookId": "2239",
         "href": "/OEBPS/ch06.xhtml",

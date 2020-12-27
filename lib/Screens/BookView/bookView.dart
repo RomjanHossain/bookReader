@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
-import 'package:knowyourbook/services/readBook/readFromAsset.dart';
+import 'package:knowyourbook/services/readBook/readFromDB.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -35,50 +35,11 @@ class BookView extends StatefulWidget {
 
 class _BookViewState extends State<BookView> {
   //! save the file on dir
+
   final Dio dio = Dio();
   bool loading = false;
   double progress = 0;
   String _fileLoc;
-  //?book view arlet
-  void showView(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("Read"),
-      color: Colors.blue,
-      colorBrightness: Brightness.dark,
-      onPressed: () {
-        Navigator.pop(context);
-        // _readasset.openBook(_fileLoc);
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: loading
-          ? LinearProgressIndicator(
-              value: progress,
-              backgroundColor: Colors.blue,
-              minHeight: 5,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Im ready to read'),
-                okButton,
-              ],
-            ),
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  //?endbookviealert
 
   Future<bool> saveEpub(String url, String fileName) async {
     Directory directory;
@@ -94,10 +55,10 @@ class _BookViewState extends State<BookView> {
       _fileLoc = directory.path + "/$fileName";
       // print(_fileLoc);
       if (await File(_fileLoc).exists()) {
-        print('file exists');
+        // print('file exists');
         return true;
       } else {
-        print('file downloading');
+        // print('file downloading');
         if (await directory.exists()) {
           await dio.download(url, saveFile.path,
               onReceiveProgress: (value1, value2) {
@@ -110,7 +71,7 @@ class _BookViewState extends State<BookView> {
         return false;
       }
     } catch (e) {
-      print(e);
+      // print(e);
       return false;
     }
   }
@@ -128,15 +89,19 @@ class _BookViewState extends State<BookView> {
   }
 
   readBook() async {
+    // print('book id\n${widget.bookid}');
+    // print('file loc before\n$_fileLoc');
     setState(() {
       loading = true;
       progress = 0;
     });
     bool downloaded = await saveEpub(widget.link, "${widget.bookid}.epub");
     if (downloaded) {
-      print("File Downloaded");
+      // print("File Downloaded");
+      // print('file loc after\n$_fileLoc');
+      _readDB.openBook(_fileLoc, widget.bookid);
     } else {
-      print("Problem Downloading File");
+      // print("Problem Downloading File");
     }
     setState(() {
       loading = false;
@@ -144,8 +109,8 @@ class _BookViewState extends State<BookView> {
   }
 
   //! file saved
-  ReadBookFromAsset _readasset = ReadBookFromAsset();
-  // ReadFromDB _readdb = ReadFromDB();
+  ReadFromDB _readDB = ReadFromDB();
+  //? aert
 
   @override
   Widget build(BuildContext context) {
@@ -160,27 +125,16 @@ class _BookViewState extends State<BookView> {
             onPressed: () => Navigator.pop(context)),
       ),
       floatingActionButton: KReadBtn(
-        onpressed: () {
+        onpressed: () async {
           //! read Book function goes here!
-          print('hol');
-          // readBook();
-          showView(context);
-          // content: LinearProgressIndicator(
-          //   value: progress,
-          //   backgroundColor: Colors.blue,
-          //   minHeight: 5,
-          //   valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-          // )
-          // : FlatButton(
-          //     onPressed: () {
-          //       _readasset.openBook(_fileLoc);
-          //     },
-          //     child: Text('read'),
-          //   ),
+          // print('hol');
 
           // _readasset.openBook();
           // print(widget.link);
-          // _readdb.openBook(widget.link);
+          await readBook();
+          // if (_haveBook) {
+          //   _readDB.openBook(widget.link, widget.bookid);
+          // }
         },
         title: 'READ',
       ),
@@ -189,6 +143,14 @@ class _BookViewState extends State<BookView> {
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         children: [
+          loading
+              ? LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Colors.blue,
+                  minHeight: 5,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                )
+              : SizedBox.shrink(),
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: 15,

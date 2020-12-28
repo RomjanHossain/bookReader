@@ -4,10 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
+import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/readBook/readFromDB.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class BookView extends StatefulWidget {
   static const String id = 'bookPage';
@@ -128,8 +130,8 @@ class _BookViewState extends State<BookView> {
         onpressed: () async {
           //! read Book function goes here!
           // print('hol');
-
-          // _readasset.openBook();
+          Provider.of<DatabaseService>(context, listen: false)
+              .updateReaded(widget.bookid);
           // print(widget.link);
           await readBook();
           // if (_haveBook) {

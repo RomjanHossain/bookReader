@@ -14,7 +14,7 @@ class DatabaseService {
   Future<void> initBook(User user, String bookid, String name, String des,
       List<String> cat, String file) async {
     await allbook(user, bookid, name, des, cat, file);
-    await views(bookid);
+
     await catagory(bookid, cat, name);
     return true;
   }
@@ -30,29 +30,17 @@ class DatabaseService {
         'Categorys': cat,
         'Download URL': file,
         'buy': false,
-        "views": [
-          0,
-          0,
-          0,
-          0,
-          0,
-        ],
+        "views today": 0,
+        "views week": 0,
+        "views month": 0,
+        "views year": 0,
+        'views alltime': 0,
         'readed': 0,
         'upload Date': timeCreated,
         'rating': 0.0,
         'uploader': user.displayName,
       },
     );
-  }
-
-  Future<void> views(String bookid) async {
-    DocumentReference _views = _db.collection('Views').doc(bookid);
-    return _views.set({
-      'today': 0,
-      'week': 0,
-      'month': 0,
-      'year': 0,
-    });
   }
 
   Future<void> catagory(
@@ -70,10 +58,50 @@ class DatabaseService {
 
   //! this is viewpoint for the lol
   // here goes all the book sort by date!! //? New Books
-  Future<void> newBook() async {
-    QuerySnapshot _nb =
-        await _db.collection('All Books').orderBy('upload Date').get();
 
-    return _nb;
+  //? readed value update if user clicked on read
+  Future<void> updateReaded(String bookid) async {
+    final DocumentReference docRef = _db.collection("All Book").doc(bookid);
+    docRef.update({"readed": FieldValue.increment(1)});
+  }
+
+  /*
+  * The math part here so don't screw with this code bitch!
+  * i don't know wha to write
+  * let's try
+  */
+  viewUpdate(String bookid) async {
+    final DocumentReference _allBook = _db.collection("All Book").doc(bookid);
+    /*
+    var _now = DateTime.now();
+    var _today = DateTime(_now.year, _now.month, _now.day);
+    int _todayInTP = 0;
+    int _tomInTP = 0;
+    var _tomorrow = _today.add(Duration(days: 1));
+    //? get todays date from firebase
+
+    await _db.collection('Date').doc('today').get().then((value) {
+      _todayInTP = value["date"].seconds;
+      print(' the time \n${value["date"].seconds}');
+    });
+    await _db.collection('Date').doc('tomorrow').get().then((value) {
+      _tomInTP = value["tom"].seconds;
+      print(' the time \n${value["tom"].seconds}');
+    });
+    */
+    //! update viewCount
+
+    _allBook.update({
+      'views today': FieldValue.increment(1),
+      'views week': FieldValue.increment(1),
+      'views month': FieldValue.increment(1),
+      'views year': FieldValue.increment(1),
+      'views alltime': FieldValue.increment(1),
+    });
+  }
+
+  //? get book detail from doc
+  Future<DocumentSnapshot> bookData(String bookid) async {
+    return _db.collection('All Book').doc(bookid).get();
   }
 }

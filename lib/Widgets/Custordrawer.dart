@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:knowyourbook/values/const.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -57,68 +59,76 @@ class CustomDrawer extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             // color: Colors.blue,
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                Text('Category'),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Action and Adventure'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.home_filled),
-                  title: Text('Classics'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.graphic_eq),
-                  title: Text('Graphic Novel'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Detective and Mystery'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Fantasy'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('historical Fiction'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Horror'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Literary Fiction'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('PolyTechnic BD'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Romance'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Science Fiction'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Short Stories'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text('Suspense and Thrillers'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.emoji_nature),
-                  title: Text("women's Fiction"),
-                ),
-              ],
-            ),
+            child: FutureBuilder(
+                future:
+                    FirebaseFirestore.instance.collection('Tags').doc().get(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    kloading();
+                  }
+                  return ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      Text('Catagory'),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Action and Adventure'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.home_filled),
+                        title: Text('Classics'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.graphic_eq),
+                        title: Text('Graphic Novel'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Detective and Mystery'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Fantasy'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('historical Fiction'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Horror'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Literary Fiction'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('PolyTechnic BD'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Romance'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Science Fiction'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Short Stories'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text('Suspense and Thrillers'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.emoji_nature),
+                        title: Text("women's Fiction"),
+                      ),
+                    ],
+                  );
+                }),
           ),
         ),
         Expanded(

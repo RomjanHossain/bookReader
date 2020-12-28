@@ -61,14 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        actions: (_selectedIndex == 0)
-            ? [
-                Padding(
-                  padding: EdgeInsets.only(right: 15),
-                  child: Icon(Icons.search, color: Colors.black, size: 30),
-                )
-              ]
-            : [],
+        // actions: (_selectedIndex == 0)
+        //     ? [
+        //         Padding(
+        //           padding: EdgeInsets.only(right: 15),
+        //           child: Icon(Icons.search, color: Colors.black, size: 30),
+        //         )
+        //       ]
+        //     : [],
       ),
       bottomNavigationBar: BottomBar(
         sInd: _selectedIndex,

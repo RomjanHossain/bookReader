@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:provider/provider.dart';
 
@@ -43,10 +42,7 @@ class OrderPage extends StatelessWidget {
             ),
             FlatButton.icon(
               color: Colors.green,
-              onPressed: () async {
-                await Provider.of<DatabaseService>(context, listen: false)
-                    .newBook();
-              },
+              onPressed: () {},
               icon: Icon(Icons.settings),
               label: Text('account counts'),
             ),

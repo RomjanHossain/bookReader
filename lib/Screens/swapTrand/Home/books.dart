@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
+import 'package:knowyourbook/services/firebase/database.dart';
+import 'package:knowyourbook/values/const.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,66 +21,7 @@ class _HomePageState extends State<HomePage> {
     StaggeredTile.fit(1),
   ];
   int _number = 0;
-  List<Widget> books = [
-    Container(
-      height: 250,
-      decoration: BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Center(
-        child: Text('Mnly'),
-      ),
-    ),
-    Container(
-      height: 300,
-      decoration: BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Center(
-        child: Text('holy'),
-      ),
-    ),
-    Container(
-      height: 250,
-      decoration: BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Center(
-        child: Text('holy'),
-      ),
-    ),
-    Container(
-      height: 300,
-      decoration: BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Center(
-        child: Text('holy'),
-      ),
-    ),
-    Container(
-      height: 250,
-      decoration: BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Center(
-        child: Text('holy'),
-      ),
-    ),
-    Container(
-      height: 300,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment.center,
-            fit: BoxFit.cover,
-            image: NetworkImage(
-              'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg',
-            ),
-          ),
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-    ),
-  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -122,48 +65,117 @@ class _HomePageState extends State<HomePage> {
               children: [
                 //? new Books
                 FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection('All Book')
+                      .orderBy('upload Date')
+                      .get(),
+                  builder: (context, snapshot) {
+                    return snapshot.hasData
+                        ? StaggeredGridView.countBuilder(
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Provider.of<DatabaseService>(context,
+                                          listen: false)
+                                      .viewUpdate(
+                                          snapshot.data.docs[index].documentID);
+                                  Navigator.push(
+                                    context,
+                                    pushToBookView(snapshot, index),
+                                  );
+                                },
+                                child: Hero(
+                                  tag: snapshot.data.docs[index].documentID,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              2,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              alignment: Alignment.center,
+                                              fit: BoxFit.cover,
+                                              image:
+                                                  AssetImage('images/pro.jpg'),
+                                            ),
+                                            color: Colors.lightBlue,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20),
+                                              // '${snapshot.data.docs[index]["name"]}',
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  '${snapshot.data.docs[index]["name"]}',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: snapshot.data.docs.length,
+                            staggeredTileBuilder: (index) {
+                              return StaggeredTile.count(
+                                1,
+                                index.isEven ? 1.6 : 1.8,
+                              );
+                            },
+                            crossAxisCount: 2,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            scrollDirection: Axis.vertical,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          )
+                        : kloading();
+                  },
+                ),
+
+                //? most popular
+                FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('All Book')
-                        .orderBy('upload Date')
+                        .orderBy('readed', descending: true)
                         .get(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? StaggeredGridView.countBuilder(
                               physics: BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BookView(
-                                        bookid: snapshot
-                                            .data.docs[index].documentID,
-                                        author: snapshot.data.docs[index]
-                                            ["author"],
-                                        buy: snapshot.data.docs[index]["buy"],
-                                        cat: snapshot.data.docs[index]
-                                            ["Categorys"],
-                                        link: snapshot.data.docs[index]
-                                            ["Download URL"],
-                                        date: snapshot.data.docs[index]
-                                            ["upload Date"],
-                                        des: snapshot.data.docs[index]
-                                            ["description"],
-                                        name: snapshot.data.docs[index]["name"],
-                                        rate: snapshot.data.docs[index]
-                                            ["rating"],
-                                        uploader: snapshot.data.docs[index]
-                                            ["uploader"],
-                                      ),
-                                    ),
-                                  ),
+                                return GestureDetector(
+                                  onTap: () {
+                                    Provider.of<DatabaseService>(context,
+                                            listen: false)
+                                        .viewUpdate(snapshot
+                                            .data.docs[index].documentID);
+                                    Navigator.push(
+                                      context,
+                                      pushToBookView(snapshot, index),
+                                    );
+                                  },
                                   child: Hero(
                                     tag: snapshot.data.docs[index].documentID,
                                     child: Column(
                                       children: [
                                         Expanded(
                                           child: Container(
-                                            // height: 300,
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width /
@@ -205,10 +217,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               itemCount: snapshot.data.docs.length,
                               staggeredTileBuilder: (index) {
-                                return StaggeredTile.count(
-                                  1,
-                                  index.isEven ? 1.6 : 1.8,
-                                );
+                                return StaggeredTile.count(1, 1.5);
                               },
                               crossAxisCount: 2,
                               padding: EdgeInsets.symmetric(
@@ -217,68 +226,100 @@ class _HomePageState extends State<HomePage> {
                               crossAxisSpacing: 12,
                               mainAxisSpacing: 12,
                             )
-                          : Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.redAccent,
-                                  ),
-                                ),
-                              ],
-                            );
+                          : kloading();
                     }),
-                //? most popular
-                StaggeredGridView.countBuilder(
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, BookView.id);
-                      },
-                      child: Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                            color: Colors.lightBlue,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          child: Image.network(
-                            'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: 10,
-                  staggeredTileBuilder: (index) {
-                    return StaggeredTile.count(1, 1.5);
-                  },
-                  crossAxisCount: 2,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  scrollDirection: Axis.vertical,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
                 //? Tranding
-                StaggeredGridView.count(
-                  physics: BouncingScrollPhysics(),
-                  crossAxisCount: 4,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  children: books,
-                  scrollDirection: Axis.vertical,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  staggeredTiles: mystaggeredTiles,
-                ),
+                FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('All Book')
+                        .orderBy('views')
+                        .limitToLast(20)
+                        .get(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              itemCount: 10,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Provider.of<DatabaseService>(context,
+                                            listen: false)
+                                        .viewUpdate(snapshot
+                                            .data.docs[index].documentID);
+                                    Navigator.push(
+                                      context,
+                                      pushToBookView(snapshot, index),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 15),
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.blue.withOpacity(0.1),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(30),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '#${index + 1} ',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Hero(
+                                            tag: snapshot
+                                                .data.docs[index].documentID,
+                                            child: CircleAvatar(
+                                                radius: 50,
+                                                backgroundImage: AssetImage(
+                                                    'images/pro.jpg')),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: ListTile(
+                                            title: Text(snapshot
+                                                .data.docs[index]["name"]),
+                                            subtitle: Text(
+                                              snapshot.data.docs[index]
+                                                  ["description"],
+                                              style: TextStyle(
+                                                wordSpacing: .4,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 4,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : kloading();
+                    }),
                 //? requested
                 StaggeredGridView.count(
                   physics: BouncingScrollPhysics(),
                   crossAxisCount: 2,
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  children: books,
+                  children: [
+                    Text('lodkf'),
+                    Text('djfskldf'),
+                  ],
                   scrollDirection: Axis.vertical,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,

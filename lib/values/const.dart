@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
@@ -94,6 +95,37 @@ Future<void> klaunchYoutube(String bookname) async {
   }
 }
 
+//! loading
+Stack kloading() {
+  return Stack(
+    children: [
+      Align(
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.redAccent,
+        ),
+      ),
+    ],
+  );
+}
+
+//! push to book detail
+MaterialPageRoute pushToBookView(AsyncSnapshot snapshot, int index) {
+  return MaterialPageRoute(
+    builder: (context) => BookView(
+      bookid: snapshot.data.docs[index].documentID,
+      author: snapshot.data.docs[index]["author"],
+      buy: snapshot.data.docs[index]["buy"],
+      cat: snapshot.data.docs[index]["Categorys"],
+      link: snapshot.data.docs[index]["Download URL"],
+      date: snapshot.data.docs[index]["upload Date"],
+      des: snapshot.data.docs[index]["description"],
+      name: snapshot.data.docs[index]["name"],
+      rate: snapshot.data.docs[index]["rating"],
+      uploader: snapshot.data.docs[index]["uploader"],
+    ),
+  );
+}
 //! upload method
 //? show
 // void showView(BuildContext context) {

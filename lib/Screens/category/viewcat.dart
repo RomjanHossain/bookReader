@@ -32,7 +32,7 @@ class ViewCat extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'category',
+          vals.id.toString(),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,

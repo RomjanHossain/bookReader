@@ -232,12 +232,13 @@ class _HomePageState extends State<HomePage> {
                 FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('All Book')
-                        .orderBy('views')
-                        .limitToLast(20)
+                        .orderBy('readed', descending: true)
+                        .limitToLast(10)
                         .get(),
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return GestureDetector(

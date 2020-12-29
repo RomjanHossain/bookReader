@@ -67,6 +67,7 @@ class _TopGrowState extends State<TopGrow> {
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -89,7 +90,7 @@ class _TopGrowState extends State<TopGrow> {
                                     readed: snapshot.data.docs[index]['readed']
                                         .toString(),
                                     views: snapshot
-                                        .data.docs[index]['views alltime']
+                                        .data.docs[index]['views week']
                                         .toString(),
                                   ),
                                 );
@@ -111,6 +112,7 @@ class _TopGrowState extends State<TopGrow> {
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -154,6 +156,7 @@ class _TopGrowState extends State<TopGrow> {
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -197,6 +200,7 @@ class _TopGrowState extends State<TopGrow> {
                     builder: (context, snapshot) {
                       return snapshot.hasData
                           ? ListView.builder(
+                              physics: BouncingScrollPhysics(),
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return GestureDetector(

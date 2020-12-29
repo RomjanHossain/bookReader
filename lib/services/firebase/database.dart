@@ -100,6 +100,18 @@ class DatabaseService {
     });
   }
 
+  //? for the drawer
+  Future<DocumentSnapshot> tagData(String tag) async {
+    DocumentSnapshot _snaps = await _db.collection('Tags').doc(tag).get();
+    // _snaps.data().forEach((key, value) {
+    //   print(key);
+    //   bookData(key).then((v) {
+    //     print(v.data());
+    //   });
+    // });
+    return _snaps;
+  }
+
   //? get book detail from doc
   Future<DocumentSnapshot> bookData(String bookid) async {
     return _db.collection('All Book').doc(bookid).get();

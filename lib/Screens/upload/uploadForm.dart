@@ -156,7 +156,7 @@ class _RealUpPageState extends State<RealUpPage> {
                       Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Text(
-                          'category',
+                          'BookCategory',
                         ),
                       ),
                       SingleChildScrollView(
@@ -168,9 +168,9 @@ class _RealUpPageState extends State<RealUpPage> {
                             for (Widget i in _listofCat) i,
                             Padding(
                               padding: EdgeInsets.only(left: 5),
-                              child: PopupMenuButton<Category>(
+                              child: PopupMenuButton<BookCategory>(
                                 icon: Icon(Icons.add),
-                                onSelected: (Category result) {
+                                onSelected: (BookCategory result) {
                                   setState(() {
                                     _bookCatagory.add(
                                       result.toString().substring(
@@ -199,113 +199,113 @@ class _RealUpPageState extends State<RealUpPage> {
                                   });
                                 },
                                 itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<Category>>[
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Action,
+                                    <PopupMenuEntry<BookCategory>>[
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Action,
                                     child: Text('Action'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Adventure,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Adventure,
                                     child: Text('Adventure'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Adult,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Adult,
                                     child: Text('Adult'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Biography,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Biography,
                                     child: Text('Biography'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Classics,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Classics,
                                     child: Text('Classics'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Cultural,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Cultural,
                                     child: Text('Cultural'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Detective,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Detective,
                                     child: Text('Detective'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Fantasy,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Fantasy,
                                     child: Text('Fantasy'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Historical,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Historical,
                                     child: Text('Historical'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Horror,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Horror,
                                     child: Text('Horror'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Literacy,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Literacy,
                                     child: Text('Literacy'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Mystery,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Mystery,
                                     child: Text('Mystery'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Novels,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Novels,
                                     child: Text('Novels'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Poetry,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Poetry,
                                     child: Text('Poetry'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Psychology,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Psychology,
                                     child: Text('Psychology'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Philosophy,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Philosophy,
                                     child: Text('Philosophy'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Romance,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Romance,
                                     child: Text('Romance'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Religion,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Religion,
                                     child: Text('Religion'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Science,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Science,
                                     child: Text('Science'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Selfhelp,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Selfhelp,
                                     child: Text('Self-help'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Short,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Short,
                                     child: Text('Short'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Social,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Social,
                                     child: Text('Social'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Suspense,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Suspense,
                                     child: Text('Suspense'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Thrillers,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Thrillers,
                                     child: Text('Thrillers'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Feminism,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Feminism,
                                     child: Text('Feminism'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.Womens,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.Womens,
                                     child: Text('Womens'),
                                   ),
-                                  const PopupMenuItem<Category>(
-                                    value: Category.ScienceFiction,
+                                  const PopupMenuItem<BookCategory>(
+                                    value: BookCategory.ScienceFiction,
                                     child: Text('Science Fiction'),
                                   ),
                                 ],
@@ -366,7 +366,8 @@ class _RealUpPageState extends State<RealUpPage> {
                         //? upload it to firebase storage
                         if (_bookCatagory.isEmpty) {
                           var snackBar = kownBar(
-                              'Category must not be empty', Colors.redAccent);
+                              'BookCategory must not be empty',
+                              Colors.redAccent);
                           _globalKey.currentState.showSnackBar(snackBar);
                         }
                         if (_epub == null) {

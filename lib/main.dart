@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
+import 'package:knowyourbook/Screens/cartview/cartView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
 import 'package:knowyourbook/Screens/ordered/orderPage.dart';
 import 'package:knowyourbook/Screens/upload/uploadForm.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           UpLoadPage.id: (context) => UpLoadPage(),
           OrderPage.id: (context) => OrderPage(),
           RealUpPage.id: (context) => RealUpPage(),
+          CheckOutPage.id: (context) => CheckOutPage(),
         },
       ),
     );

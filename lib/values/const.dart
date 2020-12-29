@@ -1,4 +1,7 @@
 import 'dart:math';
+import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -186,34 +189,36 @@ MaterialPageRoute pushToBookView(AsyncSnapshot snapshot, int index) {
     ),
   );
 }
+
 //! upload method
 //? show
-// void showView(BuildContext context) {
-//   // set up the button
-//   Widget okButton = FlatButton(
-//     child: Text("Read"),
-//     onPressed: () {
-//       Navigator.pop(context);
-//     },
-//   );
+void showBuynotAuth(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("ok"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
 
-//   // set up the AlertDialog
-//   AlertDialog alert = AlertDialog(
-//     title: Text("My title"),
-//     content: Text("This is my message."),
-//     actions: [
-//       okButton,
-//     ],
-//   );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("user not signed-in Error"),
+    content: Text("You must sign-in to Buy books!"),
+    actions: [
+      okButton,
+    ],
+  );
 
-//   // show the dialog
-//   showDialog(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return alert;
-//     },
-//   );
-// }
+  // show the dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
 
 /*
   void displayBottomSheet(BuildContext context, User user) {
@@ -366,3 +371,95 @@ MaterialPageRoute pushToBookView(AsyncSnapshot snapshot, int index) {
   }
 
   */
+
+void showBuyBook(BuildContext context, User user) {
+  showGeneralDialog(
+    barrierLabel: '',
+    barrierDismissible: true,
+    pageBuilder: (ctx, anim1, anim2) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      scrollable: true,
+      title: Center(
+          child: Center(
+        child: Text('Upload your Book'),
+      )),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          //? name field
+          Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: TextFormField(
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: 'Name',
+                border: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintText: 'Romjan Hossain',
+              ),
+              textCapitalization: TextCapitalization.words,
+            ),
+          ),
+          //? description field
+          TextFormField(
+            autocorrect: false,
+            decoration: InputDecoration(
+              labelText: 'Description',
+              border: InputBorder.none,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+            maxLines: 10,
+            textAlign: TextAlign.center,
+            textCapitalization: TextCapitalization.sentences,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [],
+                ),
+              ),
+              RawMaterialButton(
+                onPressed: () {},
+                fillColor: Colors.white.withOpacity(.7),
+                child: Icon(Icons.add),
+                shape: CircleBorder(),
+              ),
+            ],
+          ),
+
+          FlatButton(
+            color: Colors.blue,
+            colorBrightness: Brightness.dark,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            onPressed: () {},
+            child: Text('Submit'),
+          ),
+        ],
+      ),
+      elevation: 2,
+    ),
+    transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
+      filter:
+          ImageFilter.blur(sigmaX: 4 * anim1.value, sigmaY: 4 * anim1.value),
+      child: FadeTransition(
+        child: child,
+        opacity: anim1,
+      ),
+    ),
+    context: context,
+  );
+}

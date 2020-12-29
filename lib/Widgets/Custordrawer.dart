@@ -80,14 +80,13 @@ class CustomDrawer extends StatelessWidget {
                   stream:
                       FirebaseFirestore.instance.collection('Tags').snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      kloading();
-                    }
-                    return ListView(
-                      physics: BouncingScrollPhysics(),
-                      // Navigator.of(context).push(createRoute());
-                      children: viewAllCat(snapshot, context),
-                    );
+                    return snapshot.hasData
+                        ? ListView(
+                            physics: BouncingScrollPhysics(),
+                            // Navigator.of(context).push(createRoute());
+                            children: viewAllCat(snapshot, context),
+                          )
+                        : kloading();
                   })),
         ),
         Expanded(

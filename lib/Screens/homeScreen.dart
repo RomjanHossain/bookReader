@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Screens/cartview/cartView.dart';
 import 'package:knowyourbook/Screens/swapTrand/Bookmark/bookmarks.dart';
 import 'package:knowyourbook/Screens/swapTrand/Home/books.dart';
 import 'package:knowyourbook/Screens/swapTrand/Profile/profile.dart';
@@ -61,6 +62,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+        actions: [
+          IconButton(
+              icon: Icon(
+                LineIcons.cart_arrow_down,
+                color: Colors.black,
+                size: 30,
+              ),
+              onPressed: () {
+                print('carted');
+                Navigator.pushNamed(context, CheckOutPage.id);
+              })
+        ],
         // actions: (_selectedIndex == 0)
         //     ? [
         //         Padding(

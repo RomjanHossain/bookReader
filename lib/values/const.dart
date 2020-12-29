@@ -30,7 +30,7 @@ String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
     length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
 //? catagory
-enum Category {
+enum BookCategory {
   Action,
   Adventure,
   Biography,
@@ -59,6 +59,66 @@ enum Category {
   Womens,
   ScienceFiction,
 }
+// ignore: missing_return
+IconData getIcon(BookCategory type) {
+  switch (type) {
+    case BookCategory.Action:
+      return Icons.home;
+    case BookCategory.Adult:
+      return Icons.home;
+    case BookCategory.Adventure:
+      return Icons.home;
+    case BookCategory.Biography:
+      return Icons.home;
+    case BookCategory.Classics:
+      return Icons.home;
+    case BookCategory.Cultural:
+      return Icons.home;
+    case BookCategory.Detective:
+      return Icons.home;
+    case BookCategory.Fantasy:
+      return Icons.home;
+    case BookCategory.Feminism:
+      return Icons.home;
+    case BookCategory.Historical:
+      return Icons.home;
+    case BookCategory.Horror:
+      return Icons.home;
+    case BookCategory.Literacy:
+      return Icons.home;
+    case BookCategory.Mystery:
+      return Icons.home;
+    case BookCategory.Novels:
+      return Icons.home;
+    case BookCategory.Philosophy:
+      return Icons.home;
+    case BookCategory.Poetry:
+      return Icons.home;
+    case BookCategory.Psychology:
+      return Icons.home;
+    case BookCategory.Religion:
+      return Icons.home;
+    case BookCategory.Romance:
+      return Icons.home;
+    case BookCategory.Science:
+      return Icons.home;
+    case BookCategory.ScienceFiction:
+      return Icons.home;
+    case BookCategory.Selfhelp:
+      return Icons.home;
+    case BookCategory.Short:
+      return Icons.home;
+    case BookCategory.Social:
+      return Icons.home;
+    case BookCategory.Suspense:
+      return Icons.home;
+    case BookCategory.Thrillers:
+      return Icons.home;
+    case BookCategory.Womens:
+      return Icons.home;
+  }
+}
+
 //? snak bar
 SnackBar kownBar(String txt, Color col) {
   return SnackBar(

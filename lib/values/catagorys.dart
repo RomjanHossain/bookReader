@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/values/const.dart';
 
-class CustomNavItem extends StatelessWidget {
-  CustomNavItem({
+class GetTitle extends StatelessWidget {
+  GetTitle({
     this.type,
   });
-  final Category type;
+  final BookCategory type;
 
   @override
   Widget build(BuildContext context) {
@@ -15,59 +15,59 @@ class CustomNavItem extends StatelessWidget {
   // ignore: missing_return
   String getText() {
     switch (type) {
-      case Category.Action:
+      case BookCategory.Action:
         return 'Action';
-      case Category.Adult:
+      case BookCategory.Adult:
         return 'Adult';
-      case Category.Adventure:
+      case BookCategory.Adventure:
         return 'Adventure';
-      case Category.Biography:
+      case BookCategory.Biography:
         return 'Biography';
-      case Category.Classics:
+      case BookCategory.Classics:
         return 'Classics';
-      case Category.Cultural:
+      case BookCategory.Cultural:
         return 'Cultural';
-      case Category.Detective:
+      case BookCategory.Detective:
         return 'Detective';
-      case Category.Fantasy:
+      case BookCategory.Fantasy:
         return 'Fantasy';
-      case Category.Feminism:
+      case BookCategory.Feminism:
         return 'Feminism';
-      case Category.Historical:
+      case BookCategory.Historical:
         return 'Historical';
-      case Category.Horror:
+      case BookCategory.Horror:
         return 'Horror';
-      case Category.Literacy:
+      case BookCategory.Literacy:
         return 'Literacy';
-      case Category.Mystery:
+      case BookCategory.Mystery:
         return 'Mystery';
-      case Category.Novels:
+      case BookCategory.Novels:
         return 'Novels';
-      case Category.Philosophy:
+      case BookCategory.Philosophy:
         return 'Philosophy';
-      case Category.Poetry:
+      case BookCategory.Poetry:
         return 'poetry';
-      case Category.Psychology:
+      case BookCategory.Psychology:
         return 'Psychology';
-      case Category.Religion:
+      case BookCategory.Religion:
         return 'Religion';
-      case Category.Romance:
+      case BookCategory.Romance:
         return 'Romance';
-      case Category.Science:
+      case BookCategory.Science:
         return 'Science';
-      case Category.ScienceFiction:
+      case BookCategory.ScienceFiction:
         return 'Science-Fiction';
-      case Category.Selfhelp:
+      case BookCategory.Selfhelp:
         return 'Self-help';
-      case Category.Short:
+      case BookCategory.Short:
         return 'Short';
-      case Category.Social:
-        return 'SOcial';
-      case Category.Suspense:
+      case BookCategory.Social:
+        return 'Social';
+      case BookCategory.Suspense:
         return 'Suspense';
-      case Category.Thrillers:
+      case BookCategory.Thrillers:
         return 'Thrillers';
-      case Category.Womens:
+      case BookCategory.Womens:
         return 'Womens';
     }
   }

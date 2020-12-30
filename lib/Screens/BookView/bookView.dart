@@ -4,12 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:knowyourbook/Screens/cartview/cartView.dart';
+import 'package:knowyourbook/Models/book/bookmod.dart';
+import 'package:knowyourbook/Widgets/cartviewitem.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:knowyourbook/services/firebase/database.dart';
+import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:knowyourbook/services/readBook/readFromDB.dart';
 import 'package:knowyourbook/values/const.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +28,11 @@ class BookView extends StatefulWidget {
     this.cat,
     this.uploader,
     this.rate,
+    this.price,
   });
   final String bookid, des, author, name, link, uploader;
   final double rate;
+  final int price;
   final Timestamp date;
   final bool buy;
   final List<dynamic> cat;
@@ -39,6 +42,7 @@ class BookView extends StatefulWidget {
 }
 
 class _BookViewState extends State<BookView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   //! save the file on dir
 
   final Dio dio = Dio();
@@ -119,22 +123,14 @@ class _BookViewState extends State<BookView> {
     var _date = DateFormat.yMMMd().format(
         DateTime.fromMillisecondsSinceEpoch(widget.date.seconds * 1000));
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('book', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10),
-            child: IconButton(
-                onPressed: () {
-                  print('cart');
-                  Navigator.of(context).push(cartRoute());
-                },
-                icon: Icon(
-                  LineIcons.cart_arrow_down,
-                  color: Colors.black,
-                  size: 30,
-                )),
+            child: CartItemCount(),
           )
         ],
         leading: IconButton(
@@ -313,9 +309,33 @@ class _BookViewState extends State<BookView> {
                   KReadBtn(
                     title: 'Buy Now',
                     onpressed: () {
-                      (Provider.of<User>(context, listen: false) != null)
-                          ? showBuynotAuth(context)
-                          : showBuyBook(context, _user);
+                      if (widget.buy) {
+                        _scaffoldKey.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'added to cart',
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.orangeAccent,
+                            duration: Duration(seconds: 2),
+                            onVisible: () {
+                              BookModel _newBookmodel = BookModel(
+                                name: widget.name,
+                                price: widget.price,
+                                numofItem: 0,
+                              );
+
+                              Provider.of<CartModel>(context, listen: false)
+                                  .add(_newBookmodel);
+                            },
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      } else {
+                        showBuyBook(context, _user);
+                      }
+                      // widget.buy
+                      //     ?
                     },
                   ),
                 ],

@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Models/book/bookmod.dart';
 import 'package:knowyourbook/Screens/cartview/components/addgiftBtn.dart';
+import 'package:knowyourbook/Screens/cartview/components/prost.dart';
+import 'package:knowyourbook/services/providers/cart.dart';
+import 'package:knowyourbook/values/const.dart';
+import 'package:provider/provider.dart';
+
+class ShowListOfOrder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          for (BookModel _i in Provider.of<CartModel>(context).cartList)
+            ProductStack(
+              model: _i,
+              price: _i.price,
+              title: _i.name,
+            ),
+        ],
+      ),
+    );
+  }
+}
 
 //? animation for crat page
 Route cartRoute() {
@@ -25,7 +48,7 @@ class CheckOutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Color(0xFFfaf8fb),
       appBar: AppBar(
         elevation: 1,
@@ -46,10 +69,42 @@ class CheckOutPage extends StatelessWidget {
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: [
-                ProductStack(),
-                ProductStack(),
-                ProductStack(),
-                ProductStack(),
+                (Provider.of<CartModel>(context).totalBook != 0)
+                    ? ShowListOfOrder()
+
+                    // Provider.of<CartModel>(context).cartList.forEach((element) =>ProductStack())
+                    // ProductStack()
+                    : Container(
+                        height: 150,
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.2),
+                              offset: Offset(-4, 4),
+                              blurRadius: 5,
+                              // spreadRadius: 3,
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.2),
+                              offset: Offset(2, -2),
+                              blurRadius: 5,
+                              // spreadRadius: 3,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'No orders yet!',
+                            style: Theme.of(context).textTheme.headline3,
+                          ),
+                        ),
+                      ),
                 Container(
                   height: 50,
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -59,7 +114,15 @@ class CheckOutPage extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('order'), Text('add code')],
+                    children: [
+                      Text('order'),
+                      GestureDetector(
+                        onTap: () {
+                          addVoucher(context);
+                        },
+                        child: Text('add code'),
+                      )
+                    ],
                   ),
                 ),
                 Container(
@@ -83,7 +146,11 @@ class CheckOutPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('Order'), Text('৳70')],
+                          children: [
+                            Text('Order'),
+                            Text(
+                                '৳${Provider.of<CartModel>(context).totalBookPrice}'),
+                          ],
                         ),
                       ),
                       Padding(
@@ -148,6 +215,7 @@ class CheckOutPage extends StatelessWidget {
                             SizedBox(height: 15),
                             TextFormField(
                               autocorrect: false,
+                              keyboardType: TextInputType.streetAddress,
                               decoration: InputDecoration(
                                 labelText: 'Your Address here',
                                 border: InputBorder.none,
@@ -209,133 +277,6 @@ class CheckOutPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ProductStack extends StatelessWidget {
-  const ProductStack({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 150,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(.2),
-                offset: Offset(-4, 4),
-                blurRadius: 5,
-                // spreadRadius: 3,
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(.2),
-                offset: Offset(2, -2),
-                blurRadius: 5,
-                // spreadRadius: 3,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    'images/pro.jpg',
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'No Longer Human By jfklsdjfsjfssdfs',
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          .copyWith(fontWeight: FontWeight.w400),
-                    ),
-                    Text(
-                      '৳60',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    AddRemoveItem(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          right: 10,
-          child: Container(
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Color(0xFFc5bcd1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.clear,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AddRemoveItem extends StatefulWidget {
-  @override
-  _AddRemoveItemState createState() => _AddRemoveItemState();
-}
-
-class _AddRemoveItemState extends State<AddRemoveItem> {
-  int _item = 1;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: Icon(Icons.remove),
-          onPressed: () {
-            print('removed');
-            (_item > 1)
-                ? setState(() {
-                    _item -= 1;
-                  })
-                : setState(() {
-                    _item = 1;
-                  });
-          },
-        ),
-        Text(_item.toString()),
-        IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                _item += 1;
-              });
-            })
-      ],
     );
   }
 }

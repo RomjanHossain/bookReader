@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               onPressed: () {
                 print('carted');
-                Navigator.pushNamed(context, CheckOutPage.id);
+                Navigator.of(context).push(cartRoute());
               })
         ],
         // actions: (_selectedIndex == 0)

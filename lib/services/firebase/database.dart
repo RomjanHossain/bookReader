@@ -38,6 +38,7 @@ class DatabaseService {
         'readed': 0,
         'upload Date': timeCreated,
         'rating': 0.0,
+        'price': 0,
         'uploader': user.displayName,
       },
     );

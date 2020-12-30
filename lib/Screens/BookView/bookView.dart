@@ -128,7 +128,7 @@ class _BookViewState extends State<BookView> {
             child: IconButton(
                 onPressed: () {
                   print('cart');
-                  Navigator.pushNamed(context, CheckOutPage.id);
+                  Navigator.of(context).push(cartRoute());
                 },
                 icon: Icon(
                   LineIcons.cart_arrow_down,

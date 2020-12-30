@@ -1,4 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/Screens/cartview/components/addgiftBtn.dart';
+
+//? animation for crat page
+Route cartRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => CheckOutPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(1.0, 0.0);
+      var end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
 
 class CheckOutPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -25,8 +44,12 @@ class CheckOutPage extends StatelessWidget {
           Expanded(
             flex: 9,
             child: ListView(
+              physics: BouncingScrollPhysics(),
               children: [
-                Text('lkjfskd'),
+                ProductStack(),
+                ProductStack(),
+                ProductStack(),
+                ProductStack(),
                 Container(
                   height: 50,
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -190,30 +213,129 @@ class CheckOutPage extends StatelessWidget {
   }
 }
 
-class RadioListButtonLOL extends StatefulWidget {
-//  RadioListButtonLOL({this.});
+class ProductStack extends StatelessWidget {
+  const ProductStack({
+    Key key,
+  }) : super(key: key);
 
-  @override
-  _RadioListButtonLOLState createState() => _RadioListButtonLOLState();
-}
-
-class _RadioListButtonLOLState extends State<RadioListButtonLOL> {
-  bool _isActive = false;
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: Text('add order contains as GIFT'),
-      value: _isActive,
-      onChanged: (bool v) {
-        setState(() => _isActive = v);
-      },
+    return Stack(
+      children: [
+        Container(
+          height: 150,
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(.2),
+                offset: Offset(-4, 4),
+                blurRadius: 5,
+                // spreadRadius: 3,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(.2),
+                offset: Offset(2, -2),
+                blurRadius: 5,
+                // spreadRadius: 3,
+              ),
+            ],
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    'images/pro.jpg',
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No Longer Human By jfklsdjfsjfssdfs',
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          .copyWith(fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      '৳60',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    AddRemoveItem(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 10,
+          child: Container(
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Color(0xFFc5bcd1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.clear,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
-    // return RadioListTile(
-    //     title: Text('fukc yourself'),
-    //     value: _isActive,
-    //     groupValue: _isActive,
-    //     onChanged: (bool v) {
-    //       setState(() => _isActive = v);
-    //     });
+  }
+}
+
+class AddRemoveItem extends StatefulWidget {
+  @override
+  _AddRemoveItemState createState() => _AddRemoveItemState();
+}
+
+class _AddRemoveItemState extends State<AddRemoveItem> {
+  int _item = 1;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: () {
+            print('removed');
+            (_item > 1)
+                ? setState(() {
+                    _item -= 1;
+                  })
+                : setState(() {
+                    _item = 1;
+                  });
+          },
+        ),
+        Text(_item.toString()),
+        IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                _item += 1;
+              });
+            })
+      ],
+    );
   }
 }

@@ -186,11 +186,44 @@ MaterialPageRoute pushToBookView(AsyncSnapshot snapshot, int index) {
       name: snapshot.data.docs[index]["name"],
       rate: snapshot.data.docs[index]["rating"],
       uploader: snapshot.data.docs[index]["uploader"],
+      price: snapshot.data.docs[index]["buy"]
+          ? snapshot.data.docs[index]["price"]
+          : 0,
     ),
   );
 }
 
 //! upload method
+void addVoucher(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("ok"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Add your Voucher"),
+    content: TextField(
+      decoration: InputDecoration(),
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 //? show
 void showBuynotAuth(BuildContext context) {
   // set up the button
@@ -375,7 +408,7 @@ void showBuynotAuth(BuildContext context) {
 void showBuyBook(BuildContext context, User user) {
   showGeneralDialog(
     barrierLabel: '',
-    barrierDismissible: true,
+    barrierDismissible: false,
     pageBuilder: (ctx, anim1, anim2) => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -385,76 +418,26 @@ void showBuyBook(BuildContext context, User user) {
       scrollable: true,
       title: Center(
           child: Center(
-        child: Text('Upload your Book'),
+        child: Text('Out of Stock'),
       )),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          //? name field
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: TextFormField(
-              autocorrect: false,
-              decoration: InputDecoration(
-                labelText: 'Name',
-                border: InputBorder.none,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                hintText: 'Romjan Hossain',
-              ),
-              textCapitalization: TextCapitalization.words,
-            ),
-          ),
-          //? description field
-          TextFormField(
-            autocorrect: false,
-            decoration: InputDecoration(
-              labelText: 'Description',
-              border: InputBorder.none,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-            maxLines: 10,
-            textAlign: TextAlign.center,
-            textCapitalization: TextCapitalization.sentences,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [],
-                ),
-              ),
-              RawMaterialButton(
-                onPressed: () {},
-                fillColor: Colors.white.withOpacity(.7),
-                child: Icon(Icons.add),
-                shape: CircleBorder(),
-              ),
-            ],
-          ),
-
-          FlatButton(
-            color: Colors.blue,
-            colorBrightness: Brightness.dark,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            onPressed: () {},
-            child: Text('Submit'),
-          ),
-        ],
-      ),
+      actions: [
+        FlatButton(
+          color: Colors.blue,
+          colorBrightness: Brightness.dark,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('ok, We Understand'),
+        ),
+      ],
+      content: Text('We currelty out of this book.\nThanks!'),
       elevation: 2,
     ),
     transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
       filter:
-          ImageFilter.blur(sigmaX: 4 * anim1.value, sigmaY: 4 * anim1.value),
+          ImageFilter.blur(sigmaX: 1 * anim1.value, sigmaY: 1 * anim1.value),
       child: FadeTransition(
         child: child,
         opacity: anim1,

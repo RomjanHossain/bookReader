@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:knowyourbook/Models/book/bookmod.dart';
 import 'package:knowyourbook/Screens/cartview/components/addgiftBtn.dart';
 import 'package:knowyourbook/Screens/cartview/components/prost.dart';
+import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:provider/provider.dart';
@@ -42,13 +45,39 @@ Route cartRoute() {
   );
 }
 
-class CheckOutPage extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+class CheckOutPage extends StatefulWidget {
   static const String id = 'checkout';
+
+  @override
+  _CheckOutPageState createState() => _CheckOutPageState();
+}
+
+class _CheckOutPageState extends State<CheckOutPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _inD = 'in Dhaka';
+  int _delFee = 60;
+  void changeLoc() {
+    if (_inD == 'in Dhaka') {
+      setState(() {
+        _inD = 'Not in Dhaka';
+        _delFee = 80;
+      });
+    } else {
+      setState(() {
+        _inD = 'in Dhaka';
+        _delFee = 60;
+      });
+    }
+  }
+
+  String _number, _address;
+  final GlobalKey<ScaffoldState> _scaffoldKey2 = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    var _user = Provider.of<User>(context);
     return Scaffold(
       // resizeToAvoidBottomPadding: false,
+      key: _scaffoldKey2,
       backgroundColor: Color(0xFFfaf8fb),
       appBar: AppBar(
         elevation: 1,
@@ -157,14 +186,52 @@ class CheckOutPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('Delivery'), Text('৳60')],
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Delivery ',
+                                    ),
+                                    TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .copyWith(color: Colors.blue),
+                                      text: _inD,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          changeLoc();
+                                        },
+                                    )
+                                  ],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  )),
+                            ),
+                            Text('৳$_delFee')
+                          ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text('Total'), Text('৳130')],
+                          children: [
+                            Text('Payment Method'),
+                            Text('cash on delivery')
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Total'),
+                            Text(
+                                '৳${_delFee + Provider.of<CartModel>(context).totalBookPrice}')
+                          ],
                         ),
                       ),
                     ],
@@ -178,17 +245,17 @@ class CheckOutPage extends StatelessWidget {
                   ),
                   child: ExpansionTile(
                     title: Text('Address'),
-                    // trailing: Text('shit'),
                     children: [
                       Form(
                         key: _formKey,
                         child: Column(
                           children: [
                             TextFormField(
+                              onSaved: (txt) => _number = txt,
                               autocorrect: false,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'please enter your phone Number';
                                 } else if (value.length < 11) {
                                   return 'number at least 11 charecter';
                                 }
@@ -214,6 +281,13 @@ class CheckOutPage extends StatelessWidget {
                             ),
                             SizedBox(height: 15),
                             TextFormField(
+                              onSaved: (txt) => _address = txt,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'please enter your address here';
+                                }
+                                return null;
+                              },
                               autocorrect: false,
                               keyboardType: TextInputType.streetAddress,
                               decoration: InputDecoration(
@@ -268,7 +342,71 @@ class CheckOutPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     onPressed: () {
-                      print('ordered');
+                      //! danger zone
+                      if ((Provider.of<CartModel>(context, listen: false)
+                              .totalBook ==
+                          0)) {
+                        _scaffoldKey2.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'You have no order!',
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.redAccent,
+                            duration: Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                      try {
+                        if (_formKey.currentState.validate() &&
+                            (Provider.of<CartModel>(context).totalBook != 0)) {
+                          print('form validated');
+                          String _randomID = getRandomString(10);
+                          _user != null
+                              ? Provider.of<DatabaseService>(context)
+                                  .placeOrderUser(
+                                  _user,
+                                  Provider.of<CartModel>(context).bookidlists,
+                                  _randomID,
+                                  Provider.of<CartModel>(context).booknamelists,
+                                  _address,
+                                  _number,
+                                  _delFee +
+                                      Provider.of<CartModel>(context)
+                                          .totalBookPrice,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .isGift,
+                                )
+                              : Provider.of<DatabaseService>(context)
+                                  .placeOrderAnon(
+                                  Provider.of<CartModel>(context).bookidlists,
+                                  _randomID,
+                                  Provider.of<CartModel>(context).booknamelists,
+                                  _address,
+                                  _number,
+                                  _delFee +
+                                      Provider.of<CartModel>(context)
+                                          .totalBookPrice,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .isGift,
+                                );
+                        }
+                      } catch (e) {
+                        _scaffoldKey2.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'You have to fill your address',
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+
+                      // print('ordered');
                     },
                   ),
                 ),

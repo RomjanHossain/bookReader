@@ -42,7 +42,7 @@ class BookView extends StatefulWidget {
 }
 
 class _BookViewState extends State<BookView> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   //! save the file on dir
 
   final Dio dio = Dio();
@@ -322,6 +322,7 @@ class _BookViewState extends State<BookView> {
                               BookModel _newBookmodel = BookModel(
                                 name: widget.name,
                                 price: widget.price,
+                                bookid: widget.bookid,
                                 numofItem: 0,
                               );
 

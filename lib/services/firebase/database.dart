@@ -104,13 +104,67 @@ class DatabaseService {
   //? for the drawer
   Future<DocumentSnapshot> tagData(String tag) async {
     DocumentSnapshot _snaps = await _db.collection('Tags').doc(tag).get();
-    // _snaps.data().forEach((key, value) {
-    //   print(key);
-    //   bookData(key).then((v) {
-    //     print(v.data());
-    //   });
-    // });
     return _snaps;
+  }
+
+//! place order
+  Future<void> placeOrderAnon(
+    List<String> bookid,
+    String orderID,
+    List<String> bookName,
+    String address,
+    String number,
+    int price,
+    bool isGift,
+  ) async {
+    DocumentReference _order = _db.collection('Order').doc(orderID);
+    return _order.set(
+      {
+        'book_name': bookName,
+        'book_id': bookid,
+        'user addresss': address,
+        'user number': number,
+        'total': price,
+        'gift': isGift,
+        'completed': false,
+      },
+    );
+  }
+
+  Future<void> placeOrderUser(
+    User user,
+    List<String> bookid,
+    String orderID,
+    List<String> bookName,
+    String address,
+    String number,
+    int price,
+    bool isGift,
+  ) async {
+    DocumentReference _order = _db.collection('Order').doc(orderID);
+    DocumentReference _userr =
+        _db.collection('User').doc(user.uid).collection('ordered').doc(orderID);
+    await _userr.set({
+      'book_name': bookName,
+      'book_id': bookid,
+      'total': price,
+      'gift': isGift,
+      'completed': false,
+    });
+    await _order.set(
+      {
+        'book_name': bookName,
+        'book_id': bookid,
+        'user Name': user.displayName,
+        'user addresss': address,
+        'user number': number,
+        'total': price,
+        'gift': isGift,
+        'completed': false,
+        'user mail': user.email,
+      },
+    );
+    return true;
   }
 
   //? get book detail from doc

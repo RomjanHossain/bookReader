@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:knowyourbook/services/providers/cart.dart';
+import 'package:provider/provider.dart';
 
 class RadioListButtonLOL extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _RadioListButtonLOLState extends State<RadioListButtonLOL> {
       onChanged: (bool v) {
         setState(() {
           _isActive = v;
+          Provider.of<CartModel>(context, listen: false).isGift = _isActive;
         });
       },
     );

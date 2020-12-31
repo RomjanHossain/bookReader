@@ -3,7 +3,12 @@ import 'package:knowyourbook/Screens/cartview/cartView.dart';
 import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:provider/provider.dart';
 
-class CartItemCount extends StatelessWidget {
+class CartItemCount extends StatefulWidget {
+  @override
+  _CartItemCountState createState() => _CartItemCountState();
+}
+
+class _CartItemCountState extends State<CartItemCount> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +27,7 @@ class CartItemCount extends StatelessWidget {
               ),
               onPressed: null,
             ),
-            Provider.of<CartModel>(context, listen: false).totalBook == 0
+            Provider.of<CartModel>(context, listen: false).totalbook2 == 0
                 ? Container()
                 : Positioned(
                     child: Stack(
@@ -37,8 +42,8 @@ class CartItemCount extends StatelessWidget {
                           right: 4.0,
                           child: Center(
                             child: Text(
-                              Provider.of<CartModel>(context)
-                                  .totalBook
+                              Provider.of<CartModel>(context, listen: false)
+                                  .totalbook2
                                   .toString(),
                               style: TextStyle(
                                 color: Colors.white,

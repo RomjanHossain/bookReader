@@ -53,6 +53,7 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
+  bool _isOrderPlaced = false;
   final _formKey = GlobalKey<FormState>();
   String _inD = 'in Dhaka';
   int _delFee = 60;
@@ -93,12 +94,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
       ),
       body: Column(
         children: [
+          _isOrderPlaced
+              ? Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: kloading(),
+                )
+              : SizedBox.shrink(),
           Expanded(
             flex: 9,
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: [
-                (Provider.of<CartModel>(context).totalBook != 0)
+                (Provider.of<CartModel>(context, listen: false).totalbook2 != 0)
                     ? ShowListOfOrder()
 
                     // Provider.of<CartModel>(context).cartList.forEach((element) =>ProductStack())
@@ -147,7 +154,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       Text('order'),
                       GestureDetector(
                         onTap: () {
-                          addVoucher(context);
+                          _isOrderPlaced ? print('k') : addVoucher(context);
                         },
                         child: Text('add code'),
                       )
@@ -201,7 +208,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                       text: _inD,
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          changeLoc();
+                                          _isOrderPlaced
+                                              ? print('n')
+                                              : changeLoc();
                                         },
                                     )
                                   ],
@@ -341,10 +350,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    onPressed: () {
+                    onPressed: () async {
                       //! danger zone
                       if ((Provider.of<CartModel>(context, listen: false)
-                              .totalBook ==
+                              .totalbook2 ==
                           0)) {
                         _scaffoldKey2.currentState.showSnackBar(
                           SnackBar(
@@ -360,39 +369,72 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       }
                       try {
                         if (_formKey.currentState.validate() &&
-                            (Provider.of<CartModel>(context).totalBook != 0)) {
+                            (Provider.of<CartModel>(context, listen: false)
+                                    .totalbook2 !=
+                                0)) {
+                          _formKey.currentState.save();
+                          setState(() {
+                            _isOrderPlaced = true;
+                          });
                           print('form validated');
+                          //? make a loading when ordered being prepared
                           String _randomID = getRandomString(10);
                           _user != null
-                              ? Provider.of<DatabaseService>(context)
+                              ? await Provider.of<DatabaseService>(context,
+                                      listen: false)
                                   .placeOrderUser(
                                   _user,
-                                  Provider.of<CartModel>(context).bookidlists,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .bookidlists,
                                   _randomID,
-                                  Provider.of<CartModel>(context).booknamelists,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .booknamelists,
                                   _address,
                                   _number,
                                   _delFee +
-                                      Provider.of<CartModel>(context)
+                                      Provider.of<CartModel>(context,
+                                              listen: false)
                                           .totalBookPrice,
                                   Provider.of<CartModel>(context, listen: false)
                                       .isGift,
                                 )
-                              : Provider.of<DatabaseService>(context)
+                              : await Provider.of<DatabaseService>(context,
+                                      listen: false)
                                   .placeOrderAnon(
-                                  Provider.of<CartModel>(context).bookidlists,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .bookidlists,
                                   _randomID,
-                                  Provider.of<CartModel>(context).booknamelists,
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .booknamelists,
                                   _address,
                                   _number,
                                   _delFee +
-                                      Provider.of<CartModel>(context)
+                                      Provider.of<CartModel>(context,
+                                              listen: false)
                                           .totalBookPrice,
                                   Provider.of<CartModel>(context, listen: false)
                                       .isGift,
                                 );
+                          setState(() {
+                            _isOrderPlaced = false;
+                            _scaffoldKey2.currentState.showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Thanks for your order 🥰',
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 2),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                            Provider.of<CartModel>(context, listen: false)
+                                .removeAllBookfromList();
+                            Navigator.pop(context);
+                          });
                         }
                       } catch (e) {
+                        // print('this is the eorror \n$e');
                         _scaffoldKey2.currentState.showSnackBar(
                           SnackBar(
                             content: Text(

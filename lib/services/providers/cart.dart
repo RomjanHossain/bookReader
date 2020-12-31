@@ -6,6 +6,7 @@ class CartModel extends ChangeNotifier {
 
   void removeAllBookfromList() {
     cartList.clear();
+    totalBook = 0;
     notifyListeners();
   }
 
@@ -29,11 +30,6 @@ class CartModel extends ChangeNotifier {
 
   bool isGift = false;
   int totalBook = 0;
-  int get totalbook2 {
-    // notifyListeners();
-    return cartList.length;
-  }
-
   int get totalBookPrice {
     int _pp = 0;
     cartList.forEach(

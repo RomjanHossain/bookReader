@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(right: 10),
             child: CartItemCount(),
           )
         ],

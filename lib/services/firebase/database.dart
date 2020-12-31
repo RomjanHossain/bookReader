@@ -116,6 +116,7 @@ class DatabaseService {
     String number,
     int price,
     bool isGift,
+    String inDhaka,
   ) async {
     DocumentReference _order = _db.collection('Order').doc(orderID);
     return _order.set(
@@ -126,6 +127,7 @@ class DatabaseService {
         'user number': number,
         'total': price,
         'gift': isGift,
+        'inDhaka': inDhaka,
         'completed': false,
       },
     );
@@ -140,6 +142,7 @@ class DatabaseService {
     String number,
     int price,
     bool isGift,
+    String inDhaka,
   ) async {
     DocumentReference _order = _db.collection('Order').doc(orderID);
     DocumentReference _userr =
@@ -149,6 +152,7 @@ class DatabaseService {
       'book_id': bookid,
       'total': price,
       'gift': isGift,
+      'in Dhaka': inDhaka,
       'completed': false,
     });
     await _order.set(

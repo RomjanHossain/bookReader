@@ -105,7 +105,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
             child: ListView(
               physics: BouncingScrollPhysics(),
               children: [
-                (Provider.of<CartModel>(context, listen: false).totalbook2 != 0)
+                (Provider.of<CartModel>(context, listen: false).totalBook != 0)
                     ? ShowListOfOrder()
 
                     // Provider.of<CartModel>(context).cartList.forEach((element) =>ProductStack())
@@ -352,8 +352,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                         borderRadius: BorderRadius.circular(15)),
                     onPressed: () async {
                       //! danger zone
+                      /// Provider.of<CartModel>(context).totalBook == 0
                       if ((Provider.of<CartModel>(context, listen: false)
-                              .totalbook2 ==
+                              .totalBook ==
                           0)) {
                         _scaffoldKey2.currentState.showSnackBar(
                           SnackBar(
@@ -370,7 +371,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       try {
                         if (_formKey.currentState.validate() &&
                             (Provider.of<CartModel>(context, listen: false)
-                                    .totalbook2 !=
+                                    .totalBook !=
                                 0)) {
                           _formKey.currentState.save();
                           setState(() {
@@ -397,6 +398,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                           .totalBookPrice,
                                   Provider.of<CartModel>(context, listen: false)
                                       .isGift,
+                                  _inD,
                                 )
                               : await Provider.of<DatabaseService>(context,
                                       listen: false)
@@ -414,6 +416,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                           .totalBookPrice,
                                   Provider.of<CartModel>(context, listen: false)
                                       .isGift,
+                                  _inD,
                                 );
                           setState(() {
                             _isOrderPlaced = false;

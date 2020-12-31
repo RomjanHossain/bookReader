@@ -27,7 +27,7 @@ class _CartItemCountState extends State<CartItemCount> {
               ),
               onPressed: null,
             ),
-            Provider.of<CartModel>(context, listen: false).totalbook2 == 0
+            Provider.of<CartModel>(context).totalBook == 0
                 ? Container()
                 : Positioned(
                     child: Stack(
@@ -42,8 +42,8 @@ class _CartItemCountState extends State<CartItemCount> {
                           right: 4.0,
                           child: Center(
                             child: Text(
-                              Provider.of<CartModel>(context, listen: false)
-                                  .totalbook2
+                              Provider.of<CartModel>(context)
+                                  .totalBook
                                   .toString(),
                               style: TextStyle(
                                 color: Colors.white,

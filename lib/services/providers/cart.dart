@@ -3,6 +3,23 @@ import 'package:knowyourbook/Models/book/bookmod.dart';
 
 class CartModel extends ChangeNotifier {
   final List<BookModel> cartList = [];
+  List<String> get booknamelists {
+    List<String> _bn = [];
+    cartList.forEach((element) {
+      _bn.add(element.name);
+    });
+    return _bn;
+  }
+
+  List<String> get bookidlists {
+    List<String> _bn = [];
+    cartList.forEach((element) {
+      _bn.add(element.bookid);
+    });
+    return _bn;
+  }
+
+  bool isGift = false;
   int totalBook = 0;
   int get totalBookPrice {
     int _pp = 0;

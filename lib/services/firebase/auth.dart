@@ -108,10 +108,6 @@ class AuthServices {
     });
   }
 
-  Future<void> userOrdered(String bookid, User user) async {
-    _db.collection('Users').doc(user.uid).collection('Ordered').doc(bookid);
-  }
-
   Future<void> userBookmarked(String bookid, User user) async {
     _db.collection('Users').doc(user.uid).collection('Bookmarked').doc(bookid);
   }

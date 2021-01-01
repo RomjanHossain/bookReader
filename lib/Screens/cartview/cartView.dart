@@ -433,7 +433,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             );
                             Provider.of<CartModel>(context, listen: false)
                                 .removeAllBookfromList();
-                            Navigator.pop(context);
+                            Future.delayed(Duration(seconds: 3),
+                                () => Navigator.pop(context));
                           });
                         }
                       } catch (e) {

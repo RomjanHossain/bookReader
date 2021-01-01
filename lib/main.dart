@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/BookView/bookView.dart';
 import 'package:knowyourbook/Screens/cartview/cartView.dart';
 import 'package:knowyourbook/Screens/homeScreen.dart';
-import 'package:knowyourbook/Screens/ordered/orderPage.dart';
 import 'package:knowyourbook/Screens/upload/uploadForm.dart';
-import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
@@ -42,8 +40,6 @@ class MyApp extends StatelessWidget {
         routes: {
           MyHomePage.id: (context) => MyHomePage(),
           BookView.id: (context) => BookView(),
-          UpLoadPage.id: (context) => UpLoadPage(),
-          OrderPage.id: (context) => OrderPage(),
           RealUpPage.id: (context) => RealUpPage(),
           CheckOutPage.id: (context) => CheckOutPage(),
         },

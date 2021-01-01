@@ -4,18 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class BookMarks extends StatefulWidget {
-  @override
-  _BookMarksState createState() => _BookMarksState();
-}
-
-class _BookMarksState extends State<BookMarks> {
-  String dropdownValue = 'name';
-
+class BookMarks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var _user = Provider.of<User>(context);
     return Container(
-      child: (Provider.of<User>(context) != null)
+      child: (_user != null)
           ? StaggeredGridView.countBuilder(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {

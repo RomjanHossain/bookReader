@@ -182,8 +182,7 @@ class DatabaseService {
   Future<int> countOrder(User user) async {
     QuerySnapshot _myDoc =
         await _db.collection('Users').doc(user.uid).collection('ordered').get();
-    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-    return _myDocCount.length;
+    return _myDoc.docs.length;
   }
 
   Future<int> uploadOrder(User user) async {
@@ -192,8 +191,7 @@ class DatabaseService {
         .doc(user.uid)
         .collection('Uploaded')
         .get();
-    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-    return _myDocCount.length;
+    return _myDoc.docs.length;
   }
 
   //? get book detail from doc

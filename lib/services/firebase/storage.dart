@@ -12,7 +12,24 @@ class FirebaseStorageService {
   Future<File> pickFile() async {
     FilePickerResult result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
+      allowMultiple: false,
       allowedExtensions: ['epub'],
+    );
+    if (result != null) {
+      File file = File(result.files.first.path);
+      return file;
+    } else {
+      //! if User canceled the picker
+      return null;
+    }
+  }
+
+  //? 1. pick file from user
+  Future<File> pickImageFile() async {
+    FilePickerResult result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      allowedExtensions: ['png', 'jpg', 'jpeg'],
     );
     if (result != null) {
       File file = File(result.files.first.path);

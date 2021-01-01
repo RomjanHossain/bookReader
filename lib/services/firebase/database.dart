@@ -129,6 +129,7 @@ class DatabaseService {
         'gift': isGift,
         'inDhaka': inDhaka,
         'completed': false,
+        'order Data': DateTime.now(),
       },
     );
   }
@@ -145,16 +146,21 @@ class DatabaseService {
     String inDhaka,
   ) async {
     DocumentReference _order = _db.collection('Order').doc(orderID);
-    DocumentReference _userr =
-        _db.collection('User').doc(user.uid).collection('ordered').doc(orderID);
-    await _userr.set({
-      'book_name': bookName,
-      'book_id': bookid,
-      'total': price,
-      'gift': isGift,
-      'in Dhaka': inDhaka,
-      'completed': false,
-    });
+    DocumentReference _userr = _db
+        .collection('Users')
+        .doc(user.uid)
+        .collection('ordered')
+        .doc(orderID);
+    await _userr.set(
+      {
+        'book_name': bookName,
+        'total': price,
+        'gift': isGift,
+        'in Dhaka': inDhaka,
+        'completed': false,
+        'order Data': DateTime.now(),
+      },
+    );
     await _order.set(
       {
         'book_name': bookName,
@@ -166,9 +172,28 @@ class DatabaseService {
         'gift': isGift,
         'completed': false,
         'user mail': user.email,
+        'order Data': DateTime.now(),
       },
     );
     return true;
+  }
+
+  //? get length of orders
+  Future<int> countOrder(User user) async {
+    QuerySnapshot _myDoc =
+        await _db.collection('Users').doc(user.uid).collection('ordered').get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+    return _myDocCount.length;
+  }
+
+  Future<int> uploadOrder(User user) async {
+    QuerySnapshot _myDoc = await _db
+        .collection('Users')
+        .doc(user.uid)
+        .collection('Uploaded')
+        .get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+    return _myDocCount.length;
   }
 
   //? get book detail from doc

@@ -6,6 +6,7 @@ import 'package:knowyourbook/Screens/swapTrand/Profile/components/notloggedin.da
 import 'package:knowyourbook/Screens/upload/uploadPage.dart';
 import 'package:knowyourbook/Widgets/myBtn.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
+import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +16,30 @@ class ProfileW extends StatefulWidget {
 }
 
 class _ProfileWState extends State<ProfileW> {
+  int _orderCount = 0;
+  int _uploadCount = 0;
+  _changeUC(User _user) async {
+    await Provider.of<DatabaseService>(context)
+        .uploadOrder(_user)
+        .then((val) => setState(() {
+              _uploadCount = val;
+              return val;
+            }));
+  }
+
+  _changeOC(User _user) async {
+    await Provider.of<DatabaseService>(context)
+        .countOrder(_user)
+        .then((val) => setState(() {
+              _orderCount = val;
+              return val;
+            }));
+  }
+
   @override
   Widget build(BuildContext context) {
     var _user = Provider.of<User>(context);
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Container(
@@ -84,19 +106,32 @@ class _ProfileWState extends State<ProfileW> {
                       child: ListTile(
                         leading: Icon(Icons.upload_file),
                         title: Text('Uploaded'),
-                        subtitle: Text('0'),
+                        subtitle: (_changeUC(_user) != null)
+                            ? Text(_uploadCount.toString())
+                            : Text('0'),
                         trailing: Icon(Icons.navigate_next),
-                        onTap: () =>
-                            Navigator.pushNamed(context, UpLoadPage.id),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpLoadPage(
+                                      uid: _user.uid,
+                                    ))),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         leading: Icon(LineIcons.cart_arrow_down),
                         title: Text('Ordered'),
-                        subtitle: Text('0'),
+                        subtitle: (_changeOC(_user) != null)
+                            ? Text(_orderCount.toString())
+                            : Text('0'),
                         trailing: Icon(Icons.navigate_next),
-                        onTap: () => Navigator.pushNamed(context, OrderPage.id),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OrderPage(
+                                      uid: _user.uid,
+                                    ))),
                       ),
                     ),
                     MyBtn(

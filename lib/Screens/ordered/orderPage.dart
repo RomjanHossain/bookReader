@@ -1,68 +1,95 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:knowyourbook/services/firebase/storage.dart';
-import 'package:provider/provider.dart';
+import 'package:knowyourbook/values/const.dart';
+import 'package:intl/intl.dart';
 
 class OrderPage extends StatelessWidget {
   static const String id = 'order';
+  OrderPage({this.uid});
+  final String uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.navigate_before,
-              color: Colors.black,
-            ),
-            onPressed: () => Navigator.pop(context),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.navigate_before,
+            color: Colors.black,
           ),
-          centerTitle: true,
-          title: Text(
-            'Ordered',
-            style: TextStyle(
-              color: Colors.black,
-            ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        centerTitle: true,
+        title: Text(
+          'Ordered',
+          style: TextStyle(
+            color: Colors.black,
           ),
         ),
-        body: ListView(
-          children: [
-            Text(
-              '\nEmpty',
-              textAlign: TextAlign.center,
-            ),
-            FlatButton.icon(
-              color: Colors.green,
-              onPressed: () async {
-                print('hu');
-                await Provider.of<FirebaseStorageService>(context,
-                        listen: false)
-                    .listExample();
-              },
-              icon: Icon(Icons.home),
-              label: Text('get all Dir+file'),
-            ),
-            FlatButton.icon(
-              color: Colors.green,
-              onPressed: () {},
-              icon: Icon(Icons.settings),
-              label: Text('account counts'),
-            ),
-            FlatButton.icon(
-              color: Colors.green,
-              onPressed: () {
-                print('hu');
-              },
-              icon: Icon(Icons.home),
-              label: Text('holy'),
-            ),
-            FlatButton.icon(
-              color: Colors.green,
-              onPressed: () {
-                print('hu');
-              },
-              icon: Icon(Icons.home),
-              label: Text('holy'),
-            )
-          ],
-        ));
+      ),
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(uid)
+            .collection('ordered')
+            .get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemBuilder: (_, i) {
+                    return Container(
+                      height: 300,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          for (String name in snapshot.data.docs[i]
+                              ['book_name'])
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text('Book name'),
+                                Text(
+                                  name,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('is user Received order'),
+                              Text(snapshot.data.docs[i]['completed']
+                                  .toString()),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Order Date'),
+                              Text(
+                                  '${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.docs[i]['order Data'].seconds * 1000))}'),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text('Total'),
+                              Text(snapshot.data.docs[i]['total'].toString()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: snapshot.data.docs.length,
+                )
+              : kloading();
+        },
+      ),
+    );
   }
 }

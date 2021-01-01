@@ -7,6 +7,24 @@ import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:provider/provider.dart';
 
+//? animation for upload fomr
+Route uploadFormPageAnimation() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => RealUpPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(0.0, -1.0);
+      var end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
 class RealUpPage extends StatefulWidget {
   static const String id = 'realup';
   @override
@@ -88,7 +106,7 @@ class _RealUpPageState extends State<RealUpPage> {
                           },
                           autocorrect: false,
                           decoration: InputDecoration(
-                            labelText: 'Full Name',
+                            labelText: 'Book Name',
                             border: InputBorder.none,
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -314,7 +332,7 @@ class _RealUpPageState extends State<RealUpPage> {
                           ],
                         ),
                       ),
-                      //? file
+                      //? epub file
                       GestureDetector(
                         onTap: () async {
                           File _file =
@@ -349,6 +367,55 @@ class _RealUpPageState extends State<RealUpPage> {
                               width: MediaQuery.of(context).size.width / 1.2,
                               child: Center(
                                 child: Image.asset('assets/images/epub2.png'),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      //? img file
+                      GestureDetector(
+                        onTap: () async {
+                          File _file =
+                              await Provider.of<FirebaseStorageService>(context,
+                                      listen: false)
+                                  .pickImageFile();
+                          if (_file != null) {
+                            _epub = _file;
+                            // setState(() {
+                            //   _epub = _file;
+                            // });
+                          } else {
+                            //? user cancelled
+                            var snackBar = kownBar('Canceled', Colors.red);
+                            _globalKey.currentState.showSnackBar(snackBar);
+                            // Navigator.pop(context);
+                          }
+                        },
+                        child: Center(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: Colors.blue,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            child: SizedBox(
+                              height: 30,
+                              width: MediaQuery.of(context).size.width / 1.2,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text('Cover Image'),
+                                  Icon(
+                                    Icons.image,
+                                    color: Colors.green,
+                                    size: 30,
+                                  ),
+                                ],
                               ),
                             ),
                           ),

@@ -3,6 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:knowyourbook/values/const.dart';
 import 'package:intl/intl.dart';
 
+//? animation for order page
+Route orderPageAnimation(String uid) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        OrderPage(uid: uid),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(1.0, 1.0);
+      var end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
 class OrderPage extends StatelessWidget {
   static const String id = 'order';
   OrderPage({this.uid});

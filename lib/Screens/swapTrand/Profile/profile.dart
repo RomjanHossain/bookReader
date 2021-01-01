@@ -16,24 +16,9 @@ class ProfileW extends StatefulWidget {
 }
 
 class _ProfileWState extends State<ProfileW> {
-  int _orderCount = 0;
-  int _uploadCount = 0;
-  _changeUC(User _user) async {
-    await Provider.of<DatabaseService>(context)
-        .uploadOrder(_user)
-        .then((val) => setState(() {
-              _uploadCount = val;
-              return val;
-            }));
-  }
-
-  _changeOC(User _user) async {
-    await Provider.of<DatabaseService>(context)
-        .countOrder(_user)
-        .then((val) => setState(() {
-              _orderCount = val;
-              return val;
-            }));
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -99,39 +84,41 @@ class _ProfileWState extends State<ProfileW> {
                         leading: Icon(Icons.bookmarks_rounded),
                         title: Text('Bookmarks'),
                         subtitle: Text('23'),
-                        trailing: Icon(Icons.navigate_next),
                       ),
                     ),
                     Card(
-                      child: ListTile(
-                        leading: Icon(Icons.upload_file),
-                        title: Text('Uploaded'),
-                        subtitle: (_changeUC(_user) != null)
-                            ? Text(_uploadCount.toString())
-                            : Text('0'),
-                        trailing: Icon(Icons.navigate_next),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UpLoadPage(
-                                      uid: _user.uid,
-                                    ))),
-                      ),
+                      child: FutureBuilder(
+                          future: Provider.of<DatabaseService>(context)
+                              .uploadOrder(_user),
+                          builder: (context, snapshot) {
+                            return ListTile(
+                              leading: Icon(Icons.upload_file),
+                              title: Text('Uploaded'),
+                              subtitle: (snapshot.hasData)
+                                  ? Text(snapshot.data.toString())
+                                  : Text('0'),
+                              trailing: Icon(Icons.navigate_next),
+                              onTap: () => Navigator.of(context)
+                                  .push(uploadPageAnimation(_user.uid)),
+                            );
+                          }),
                     ),
                     Card(
-                      child: ListTile(
-                        leading: Icon(LineIcons.cart_arrow_down),
-                        title: Text('Ordered'),
-                        subtitle: (_changeOC(_user) != null)
-                            ? Text(_orderCount.toString())
-                            : Text('0'),
-                        trailing: Icon(Icons.navigate_next),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OrderPage(
-                                      uid: _user.uid,
-                                    ))),
+                      child: FutureBuilder(
+                        future: Provider.of<DatabaseService>(context)
+                            .countOrder(_user),
+                        builder: (context, snapshot) {
+                          return ListTile(
+                            leading: Icon(LineIcons.cart_arrow_down),
+                            title: Text('Ordered'),
+                            subtitle: (snapshot.hasData)
+                                ? Text(snapshot.data.toString())
+                                : Text('0'),
+                            trailing: Icon(Icons.navigate_next),
+                            onTap: () => Navigator.of(context)
+                                .push(orderPageAnimation(_user.uid)),
+                          );
+                        },
                       ),
                     ),
                     MyBtn(

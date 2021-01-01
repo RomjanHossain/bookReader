@@ -4,7 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:knowyourbook/Screens/upload/uploadForm.dart';
 import 'package:knowyourbook/values/const.dart';
 
-enum tags { harder, smarter, selfStarter, tradingCharter }
+//? animation for upload page
+Route uploadPageAnimation(String uid) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        UpLoadPage(uid: uid),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = Offset(-1.0, 1.0);
+      var end = Offset.zero;
+      var tween = Tween(begin: begin, end: end);
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
 
 class UpLoadPage extends StatelessWidget {
   static const String id = 'upload';
@@ -15,9 +32,7 @@ class UpLoadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, RealUpPage.id);
-        },
+        onPressed: () => Navigator.of(context).push(uploadFormPageAnimation()),
         child: Icon(Icons.add),
       ),
       appBar: AppBar(

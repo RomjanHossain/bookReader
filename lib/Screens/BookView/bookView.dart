@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:knowyourbook/Models/book/bookmod.dart';
@@ -11,6 +12,7 @@ import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:knowyourbook/services/readBook/readFromDB.dart';
 import 'package:knowyourbook/values/const.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -137,15 +139,15 @@ class _BookViewState extends State<BookView> {
             icon: Icon(Icons.navigate_before, color: Colors.black),
             onPressed: () => Navigator.pop(context)),
       ),
-      floatingActionButton: KReadBtn(
-        onpressed: () async {
-          //! read Book function goes here!
-          Provider.of<DatabaseService>(context, listen: false)
-              .updateReaded(widget.bookid);
-          await readBook();
-        },
-        title: 'READ',
-      ),
+      // floatingActionButton: KReadBtn(
+      //   onpressed: () async {
+      //     //! read Book function goes here!
+      //     Provider.of<DatabaseService>(context, listen: false)
+      //         .updateReaded(widget.bookid);
+      //     await readBook();
+      //   },
+      //   title: 'READ',
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -193,23 +195,76 @@ class _BookViewState extends State<BookView> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Hero(
-              tag: widget.bookid,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: Image.asset(
-                  'images/pro.jpg',
-                  fit: BoxFit.cover,
+            child: Stack(
+              children: [
+                Align(
                   alignment: Alignment.center,
-                  height: 400,
-                  // width: 250,
+                  child: Hero(
+                    tag: widget.bookid,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.4,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        child: Image.asset(
+                          'images/pro.jpg',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          height: 400,
+                          // width: 250,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: FlatButton(
+                    color: Color(0xFF4e4bf9),
+                    onPressed: () {
+                      if (widget.buy) {
+                        _scaffoldKey.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'added to cart',
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.orangeAccent,
+                            duration: Duration(seconds: 2),
+                            onVisible: () {
+                              BookModel _newBookmodel = BookModel(
+                                name: widget.name,
+                                price: widget.price,
+                                bookid: widget.bookid,
+                                numofItem: 0,
+                              );
+
+                              Provider.of<CartModel>(context, listen: false)
+                                  .add(_newBookmodel);
+                            },
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      } else {
+                        showBuyBook(context, _user);
+                      }
+                    },
+                    padding: EdgeInsets.all(15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    colorBrightness: Brightness.dark,
+                    child: Text(
+                      'Buy the Book',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: ListTile(
@@ -294,50 +349,57 @@ class _BookViewState extends State<BookView> {
                 bottom: 50,
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  KReadBtn(
-                    title: 'AudioBook',
-                    onpressed: () async {
-                      var _name = widget.name.toString().replaceAll(' ', '+');
-
-                      String _url = _name + '+audiobook';
-                      klaunchYoutube(_url);
-                    },
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFF292d36),
+                      ),
+                      child: IconButton(
+                          color: Colors.red,
+                          disabledColor: Colors.green,
+                          focusColor: Colors.blue,
+                          highlightColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          tooltip: 'bookmark',
+                          onPressed: () {
+                            print('bookmark');
+                          },
+                          icon: Icon(CupertinoIcons.bookmark)),
+                    ),
                   ),
-                  KReadBtn(
-                    title: 'Buy Now',
-                    onpressed: () {
-                      if (widget.buy) {
-                        _scaffoldKey.currentState.showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'added to cart',
-                              textAlign: TextAlign.center,
-                            ),
-                            backgroundColor: Colors.orangeAccent,
-                            duration: Duration(seconds: 2),
-                            onVisible: () {
-                              BookModel _newBookmodel = BookModel(
-                                name: widget.name,
-                                price: widget.price,
-                                bookid: widget.bookid,
-                                numofItem: 0,
-                              );
-
-                              Provider.of<CartModel>(context, listen: false)
-                                  .add(_newBookmodel);
-                            },
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      } else {
-                        showBuyBook(context, _user);
-                      }
-                      // widget.buy
-                      //     ?
-                    },
+                  // KReadBtn(
+                  //   title: 'AudioBook',
+                  //   onpressed: () async {
+                  //     var _name = widget.name.toString().replaceAll(' ', '+');
+                  //     String _url = _name + '+audiobook';
+                  //     klaunchYoutube(_url);
+                  //   },
+                  // ),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 18),
+                        color: Color(0xFFfa784a),
+                        colorBrightness: Brightness.dark,
+                        onPressed: () async {
+                          //! read Book function goes here!
+                          Provider.of<DatabaseService>(context, listen: false)
+                              .updateReaded(widget.bookid);
+                          await readBook();
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text('Start Reading'),
+                      ),
+                    ),
                   ),
                 ],
               ),

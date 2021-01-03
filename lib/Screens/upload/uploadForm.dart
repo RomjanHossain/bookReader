@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:knowyourbook/values/const.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:image/image.dart' as IM;
 
 //? animation for upload fomr
 Route uploadFormPageAnimation() {
@@ -381,23 +380,13 @@ class _RealUpPageState extends State<RealUpPage> {
                       //? img file
                       GestureDetector(
                         onTap: () async {
-                          File _file =
-                              await Provider.of<FirebaseStorageService>(context,
-                                      listen: false)
-                                  .pickImageFile();
+                          PickedFile _file = await ImagePicker().getImage(
+                            source: ImageSource.gallery,
+                            imageQuality: 50,
+                          );
+
                           if (_file != null) {
-                            Directory _tempDir = await getTemporaryDirectory();
-                            String _tempPath = _tempDir.path;
-                            IM.Image imageFile =
-                                IM.decodeImage(_file.readAsBytesSync());
-                            String _randomName = getRandomString(20);
-                            final compressedImg =
-                                File('$_tempPath/img_$_randomName.jpg')
-                                  ..writeAsBytesSync(IM.encodeJpg(
-                                    imageFile,
-                                    quality: 80,
-                                  ));
-                            _img = compressedImg;
+                            _img = File(_file.path);
                           } else {
                             //? user cancelled
                             var snackBar = kownBar('Canceled', Colors.red);

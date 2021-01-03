@@ -5,7 +5,9 @@ import 'package:knowyourbook/services/firebase/auth.dart';
 import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/firebase/storage.dart';
 import 'package:knowyourbook/values/const.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as IM;
 
 //? animation for upload fomr
 Route uploadFormPageAnimation() {
@@ -43,6 +45,8 @@ class _RealUpPageState extends State<RealUpPage> {
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context);
     File _epub;
+    File _img;
+
     return Scaffold(
       key: _globalKey,
       resizeToAvoidBottomInset: false,
@@ -341,9 +345,6 @@ class _RealUpPageState extends State<RealUpPage> {
                                   .pickFile();
                           if (_file != null) {
                             _epub = _file;
-                            // setState(() {
-                            //   _epub = _file;
-                            // });
                           } else {
                             //? user cancelled
                             var snackBar = kownBar('Canceled', Colors.red);
@@ -365,8 +366,13 @@ class _RealUpPageState extends State<RealUpPage> {
                             child: SizedBox(
                               height: 30,
                               width: MediaQuery.of(context).size.width / 1.2,
-                              child: Center(
-                                child: Image.asset('assets/images/epub2.png'),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text('epub file'),
+                                  Image.asset('assets/images/epub2.png'),
+                                ],
                               ),
                             ),
                           ),
@@ -380,10 +386,18 @@ class _RealUpPageState extends State<RealUpPage> {
                                       listen: false)
                                   .pickImageFile();
                           if (_file != null) {
-                            _epub = _file;
-                            // setState(() {
-                            //   _epub = _file;
-                            // });
+                            Directory _tempDir = await getTemporaryDirectory();
+                            String _tempPath = _tempDir.path;
+                            IM.Image imageFile =
+                                IM.decodeImage(_file.readAsBytesSync());
+                            String _randomName = getRandomString(20);
+                            final compressedImg =
+                                File('$_tempPath/img_$_randomName.jpg')
+                                  ..writeAsBytesSync(IM.encodeJpg(
+                                    imageFile,
+                                    quality: 80,
+                                  ));
+                            _img = compressedImg;
                           } else {
                             //? user cancelled
                             var snackBar = kownBar('Canceled', Colors.red);
@@ -442,10 +456,16 @@ class _RealUpPageState extends State<RealUpPage> {
                               kownBar('epub file needed', Colors.redAccent);
                           _globalKey.currentState.showSnackBar(snackBar);
                         }
+                        if (_img == null) {
+                          var snackBar = kownBar(
+                              'Book Cover Image needed', Colors.redAccent);
+                          _globalKey.currentState.showSnackBar(snackBar);
+                        }
 
                         if (_formKey.currentState.validate() &&
                             _bookCatagory.isNotEmpty &&
-                            _epub != null) {
+                            _epub != null &&
+                            _img != null) {
                           _formKey.currentState.save();
 
                           setState(() {
@@ -453,11 +473,18 @@ class _RealUpPageState extends State<RealUpPage> {
                           });
                           await Provider.of<FirebaseStorageService>(context,
                                   listen: false)
-                              .uploadFile(_epub, user)
+                              .uploadFile(_epub, _img, user)
                               .then((String bookid) async {
                             await Provider.of<AuthServices>(context,
                                     listen: false)
-                                .userUploaded(bookid, user);
+                                .userUploaded(
+                                    bookid,
+                                    _bookName,
+                                    await Provider.of<FirebaseStorageService>(
+                                            context,
+                                            listen: false)
+                                        .coverdownloadURL(user.uid, bookid),
+                                    user);
 
                             await Provider.of<DatabaseService>(context,
                                     listen: false)
@@ -469,7 +496,10 @@ class _RealUpPageState extends State<RealUpPage> {
                               _bookCatagory,
                               await Provider.of<FirebaseStorageService>(context,
                                       listen: false)
-                                  .downloadURL(user.uid, bookid),
+                                  .epubdownloadURL(user.uid, bookid),
+                              await Provider.of<FirebaseStorageService>(context,
+                                      listen: false)
+                                  .coverdownloadURL(user.uid, bookid),
                             );
 
                             var snackBar = kownBar('Uploaded', Colors.green);

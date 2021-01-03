@@ -5,9 +5,15 @@ import 'package:line_icons/line_icons.dart';
 
 class BookCardGrowing extends StatelessWidget {
   BookCardGrowing(
-      {this.index, this.desc, this.docID, this.name, this.readed, this.views});
+      {this.index,
+      this.desc,
+      this.docID,
+      this.name,
+      this.readed,
+      this.views,
+      this.cover});
   final int index;
-  final String docID, name, views, readed, desc;
+  final String docID, name, views, readed, desc, cover;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class BookCardGrowing extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 child: Image.network(
-                  'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg',
+                  cover,
                 ),
               ),
             ),

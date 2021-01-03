@@ -4,8 +4,8 @@ import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:provider/provider.dart';
 
 class ProductStack extends StatelessWidget {
-  ProductStack({this.price, this.title, this.model});
-  final String title;
+  ProductStack({this.price, this.title, this.model, this.cover});
+  final String title, cover;
   final int price;
   final BookModel model;
 
@@ -42,8 +42,8 @@ class ProductStack extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    'images/pro.jpg',
+                  child: Image.network(
+                    cover,
                   ),
                 ),
               ),

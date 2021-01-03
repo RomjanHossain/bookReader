@@ -99,8 +99,8 @@ class _HomePageState extends State<HomePage> {
                                             image: DecorationImage(
                                               alignment: Alignment.center,
                                               fit: BoxFit.cover,
-                                              image:
-                                                  AssetImage('images/pro.jpg'),
+                                              image: NetworkImage(
+                                                  '${snapshot.data.docs[index]["cover url"]}'),
                                             ),
                                             color: Colors.lightBlue,
                                             borderRadius: BorderRadius.all(
@@ -184,8 +184,8 @@ class _HomePageState extends State<HomePage> {
                                               image: DecorationImage(
                                                 alignment: Alignment.center,
                                                 fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                    'images/pro.jpg'),
+                                                image: NetworkImage(
+                                                    '${snapshot.data.docs[index]["cover url"]}'),
                                               ),
                                               color: Colors.lightBlue,
                                               borderRadius: BorderRadius.all(
@@ -283,9 +283,10 @@ class _HomePageState extends State<HomePage> {
                                             tag: snapshot
                                                 .data.docs[index].documentID,
                                             child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundImage: AssetImage(
-                                                    'images/pro.jpg')),
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  '${snapshot.data.docs[index]["cover url"]}'),
+                                            ),
                                           ),
                                         ),
                                         Expanded(

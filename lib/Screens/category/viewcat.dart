@@ -71,6 +71,7 @@ class ViewCat extends StatelessWidget {
                                   buy: snapshot.data["buy"],
                                   cat: snapshot.data["Categorys"],
                                   link: snapshot.data["Download URL"],
+                                  cover: snapshot.data['cover url'],
                                   date: snapshot.data["upload Date"],
                                   des: snapshot.data["description"],
                                   name: snapshot.data["name"],
@@ -96,7 +97,8 @@ class ViewCat extends StatelessWidget {
                                       image: DecorationImage(
                                         alignment: Alignment.center,
                                         fit: BoxFit.cover,
-                                        image: AssetImage('images/pro.jpg'),
+                                        image: NetworkImage(
+                                            snapshot.data["cover url"]),
                                       ),
                                       color: Colors.lightBlue,
                                       borderRadius: BorderRadius.all(

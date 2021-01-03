@@ -92,6 +92,8 @@ class _TopGrowState extends State<TopGrow> {
                                     views: snapshot
                                         .data.docs[index]['views week']
                                         .toString(),
+                                    cover: snapshot.data.docs[index]
+                                        ["cover url"],
                                   ),
                                 );
                               },
@@ -129,6 +131,8 @@ class _TopGrowState extends State<TopGrow> {
                                   child: BookCardGrowing(
                                     desc: snapshot.data.docs[index]
                                         ['description'],
+                                    cover: snapshot.data.docs[index]
+                                        ["cover url"],
                                     docID: snapshot.data.docs[index].documentID,
                                     index: index,
                                     name: snapshot.data.docs[index]['name'],
@@ -181,6 +185,8 @@ class _TopGrowState extends State<TopGrow> {
                                     views: snapshot
                                         .data.docs[index]['views year']
                                         .toString(),
+                                    cover: snapshot.data.docs[index]
+                                        ["cover url"],
                                   ),
                                 );
                               },
@@ -217,6 +223,8 @@ class _TopGrowState extends State<TopGrow> {
                                   child: BookCardGrowing(
                                     desc: snapshot.data.docs[index]
                                         ['description'],
+                                    cover: snapshot.data.docs[index]
+                                        ["cover url"],
                                     docID: snapshot.data.docs[index].documentID,
                                     index: index,
                                     name: snapshot.data.docs[index]['name'],

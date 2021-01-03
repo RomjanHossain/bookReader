@@ -75,7 +75,8 @@ class UpLoadPage extends StatelessWidget {
                               image: DecorationImage(
                                 alignment: Alignment.center,
                                 fit: BoxFit.cover,
-                                image: AssetImage('images/pro.jpg'),
+                                image: NetworkImage(
+                                    '${snapshot.data.docs[i]["cover"]}'),
                               ),
                               color: Colors.lightBlue,
                               borderRadius: BorderRadius.all(
@@ -88,7 +89,7 @@ class UpLoadPage extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '${snapshot.data.docs[i]["bookid"]}',
+                                  text: '${snapshot.data.docs[i]["name"]}',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,

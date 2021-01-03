@@ -70,10 +70,12 @@ class OrderPage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text('Book name'),
-                                Text(
-                                  name,
-                                  overflow: TextOverflow.ellipsis,
+                                Text('Book name\n\n\n'),
+                                Expanded(
+                                  child: Text(
+                                    name,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),

@@ -181,6 +181,7 @@ MaterialPageRoute pushToBookView(AsyncSnapshot snapshot, int index) {
       buy: snapshot.data.docs[index]["buy"],
       cat: snapshot.data.docs[index]["Categorys"],
       link: snapshot.data.docs[index]["Download URL"],
+      cover: snapshot.data.docs[index]["cover url"],
       date: snapshot.data.docs[index]["upload Date"],
       des: snapshot.data.docs[index]["description"],
       name: snapshot.data.docs[index]["name"],

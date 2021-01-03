@@ -25,13 +25,14 @@ class BookView extends StatefulWidget {
     this.buy,
     this.date,
     this.link,
+    this.cover,
     this.name,
     this.cat,
     this.uploader,
     this.rate,
     this.price,
   });
-  final String bookid, des, author, name, link, uploader;
+  final String bookid, des, author, name, link, cover, uploader;
   final double rate;
   final int price;
   final Timestamp date;
@@ -204,8 +205,8 @@ class _BookViewState extends State<BookView> {
                       width: MediaQuery.of(context).size.width / 1.4,
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: Image.asset(
-                          'images/pro.jpg',
+                        child: Image.network(
+                          widget.cover,
                           fit: BoxFit.cover,
                           alignment: Alignment.center,
                           height: 400,
@@ -235,6 +236,7 @@ class _BookViewState extends State<BookView> {
                                 name: widget.name,
                                 price: widget.price,
                                 bookid: widget.bookid,
+                                cover: widget.cover,
                                 numofItem: 0,
                               );
 

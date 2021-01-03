@@ -20,6 +20,7 @@ class ShowListOfOrder extends StatelessWidget {
               model: _i,
               price: _i.price,
               title: _i.name,
+              cover: _i.cover,
             ),
         ],
       ),

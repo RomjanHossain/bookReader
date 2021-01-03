@@ -159,7 +159,7 @@ class DatabaseService {
         'gift': isGift,
         'in Dhaka': inDhaka,
         'completed': false,
-        'order Data': DateTime.now(),
+        'order Date': DateTime.now(),
       },
     );
     await _order.set(
@@ -173,7 +173,7 @@ class DatabaseService {
         'gift': isGift,
         'completed': false,
         'user mail': user.email,
-        'order Data': DateTime.now(),
+        'order Date': DateTime.now(),
       },
     );
     return true;

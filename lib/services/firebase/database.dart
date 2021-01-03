@@ -12,15 +12,15 @@ class DatabaseService {
 
   //! all book releated database is here!
   Future<void> initBook(User user, String bookid, String name, String des,
-      List<String> cat, String file) async {
-    await allbook(user, bookid, name, des, cat, file);
+      List<String> cat, String file, String cover) async {
+    await allbook(user, bookid, name, des, cat, file, cover);
 
     await catagory(bookid, cat, name);
     return true;
   }
 
   Future<void> allbook(User user, String bookid, String name, String des,
-      List<String> cat, String file) async {
+      List<String> cat, String file, String cover) async {
     DocumentReference _allbook = _db.collection('All Book').doc(bookid);
     return _allbook.set(
       {
@@ -29,6 +29,7 @@ class DatabaseService {
         'description': des,
         'Categorys': cat,
         'Download URL': file,
+        'cover url': cover,
         'buy': false,
         "views today": 0,
         "views week": 0,

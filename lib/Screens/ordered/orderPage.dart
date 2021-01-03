@@ -90,7 +90,7 @@ class OrderPage extends StatelessWidget {
                             children: [
                               Text('Order Date'),
                               Text(
-                                  '${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.docs[i]['order Data'].seconds * 1000))}'),
+                                  '${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.docs[i]['order Date'].seconds * 1000))}'),
                             ],
                           ),
                           Row(

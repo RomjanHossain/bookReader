@@ -12,7 +12,6 @@ import 'package:knowyourbook/services/firebase/database.dart';
 import 'package:knowyourbook/services/providers/cart.dart';
 import 'package:knowyourbook/services/readBook/readFromDB.dart';
 import 'package:knowyourbook/values/const.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';

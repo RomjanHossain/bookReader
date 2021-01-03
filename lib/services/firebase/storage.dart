@@ -41,10 +41,11 @@ class FirebaseStorageService {
   }
 
   //? 2. upload file
-  Future<String> uploadFile(File file, User user) async {
+  Future<String> uploadFile(File file1, File file2, User user) async {
     String _randomName = getRandomString(20);
     try {
-      await storage.ref('${user.uid}/$_randomName.epub').putFile(file);
+      await storage.ref('${user.uid}/$_randomName.epub').putFile(file1);
+      await storage.ref('${user.uid}/$_randomName.jpg').putFile(file2);
     } catch (e) {
       print('error for firebase storage $e');
     }
@@ -52,8 +53,13 @@ class FirebaseStorageService {
   }
 
 //? download url
-  Future<String> downloadURL(String uid, String name) async {
+  Future<String> epubdownloadURL(String uid, String name) async {
     String downloadURL = await storage.ref('$uid/$name.epub').getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> coverdownloadURL(String uid, String name) async {
+    String downloadURL = await storage.ref('$uid/$name.jpg').getDownloadURL();
     return downloadURL;
   }
 

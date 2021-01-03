@@ -97,7 +97,8 @@ class AuthServices {
     _db.collection('Users').doc(user.uid).collection('Viewed').doc(bookid);
   }
 
-  Future<void> userUploaded(String bookid, User user) async {
+  Future<void> userUploaded(
+      String bookid, String name, String cover, User user) async {
     DocumentReference _dd = _db
         .collection('Users')
         .doc(user.uid)
@@ -105,6 +106,8 @@ class AuthServices {
         .doc(bookid);
     return _dd.set({
       'bookid': bookid,
+      'name': name,
+      'cover': cover,
     });
   }
 

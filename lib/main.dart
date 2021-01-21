@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             color: Colors.white,
           ),
+          // scaffoldBackgroundColor: Color(0xFFffc7dc),
         ),
         initialRoute: MyHomePage.id,
         routes: {

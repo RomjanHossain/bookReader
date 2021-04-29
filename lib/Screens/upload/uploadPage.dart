@@ -70,17 +70,11 @@ class UpLoadPage extends StatelessWidget {
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 10),
-                            height: 400,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                alignment: Alignment.center,
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    '${snapshot.data.docs[i]["cover"]}'),
-                              ),
-                              color: Colors.lightBlue,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                '${snapshot.data.docs[i]["cover"]}',
+                                fit: BoxFit.fitHeight,
                               ),
                             ),
                           ),

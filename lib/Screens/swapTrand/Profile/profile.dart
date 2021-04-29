@@ -80,11 +80,19 @@ class _ProfileWState extends State<ProfileW> {
                       ),
                     ),
                     Card(
-                      child: ListTile(
-                        leading: Icon(Icons.bookmarks_rounded),
-                        title: Text('Bookmarks'),
-                        subtitle: Text('23'),
-                      ),
+                      child: FutureBuilder(
+                          future: Provider.of<DatabaseService>(context,
+                                  listen: false)
+                              .getBookmarkLength(_user.uid),
+                          builder: (context, snapshot) {
+                            return ListTile(
+                              leading: Icon(Icons.bookmarks_rounded),
+                              title: Text('Bookmarks'),
+                              subtitle: (snapshot.hasData)
+                                  ? Text(snapshot.data.toString())
+                                  : Text('0'),
+                            );
+                          }),
                     ),
                     Card(
                       child: FutureBuilder(

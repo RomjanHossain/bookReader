@@ -51,6 +51,7 @@ class _BookViewState extends State<BookView> {
   bool loading = false;
   double progress = 0;
   String _fileLoc;
+  bool _inBookmarked = false;
 
   Future<bool> saveEpub(String url, String fileName) async {
     Directory directory;
@@ -118,6 +119,18 @@ class _BookViewState extends State<BookView> {
   //! file saved
   ReadFromDB _readDB = ReadFromDB();
   //? aert
+  int _bc = 0;
+  void bookmarCoun(String uid) async {
+    int _bookmarkCount =
+        await Provider.of<DatabaseService>(context, listen: false)
+            .getBookmarkLength(uid)
+            .then((val) {
+      setState(() {
+        _bc = val;
+      });
+      return val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +161,7 @@ class _BookViewState extends State<BookView> {
       //   },
       //   title: 'READ',
       // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: ListView(
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
@@ -361,27 +374,45 @@ class _BookViewState extends State<BookView> {
                         color: Color(0xFF292d36),
                       ),
                       child: IconButton(
-                          color: Colors.red,
-                          disabledColor: Colors.green,
-                          focusColor: Colors.blue,
-                          highlightColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          tooltip: 'bookmark',
-                          onPressed: () {
-                            print('bookmark');
-                          },
-                          icon: Icon(CupertinoIcons.bookmark)),
+                        color: Colors.red,
+                        disabledColor: Colors.green,
+                        focusColor: Colors.blue,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        tooltip: 'bookmark',
+                        onPressed: () async {
+                          print('bookmark');
+                          bookmarCoun(_user.uid);
+                          print(_bc.toString());
+                          setState(
+                            () {
+                              _inBookmarked = !_inBookmarked;
+                            },
+                          );
+                          print(_inBookmarked.toString());
+                          _inBookmarked
+                              ? await Provider.of<DatabaseService>(context,
+                                      listen: false)
+                                  .addbookmarkBook(
+                                  widget.bookid,
+                                  _user.uid,
+                                  _bc,
+                                )
+                              : await Provider.of<DatabaseService>(context,
+                                      listen: false)
+                                  .removebookmarkBook(
+                                  widget.bookid,
+                                  _user.uid,
+                                  _bc,
+                                );
+                        },
+                        icon: _inBookmarked
+                            ? Icon(CupertinoIcons.bookmark_fill)
+                            : Icon(CupertinoIcons.bookmark),
+                      ),
                     ),
                   ),
-                  // KReadBtn(
-                  //   title: 'AudioBook',
-                  //   onpressed: () async {
-                  //     var _name = widget.name.toString().replaceAll(' ', '+');
-                  //     String _url = _name + '+audiobook';
-                  //     klaunchYoutube(_url);
-                  //   },
-                  // ),
                   Expanded(
                     flex: 5,
                     child: Padding(

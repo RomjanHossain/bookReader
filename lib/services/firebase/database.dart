@@ -195,6 +195,47 @@ class DatabaseService {
     return _myDoc.docs.length;
   }
 
+  //? add / remove bookmarked
+  Future<void> addbookmarkBook(String bookid, String uid, int i) async {
+    DocumentReference _cat = _db.collection('Bookmarks').doc(uid);
+    return _cat.set(
+      {
+        'book ${i + 1}': bookid,
+      },
+    );
+  }
+
+  Future<void> removebookmarkBook(String bookid, String uid, int i) async {
+    DocumentReference _cat = _db.collection('Bookmarks').doc(uid);
+    return _cat.update(
+      {
+        'book ${i - 1}': FieldValue.delete(),
+      },
+    );
+  }
+
+  Future<int> getBookmarkLength(String uid) async {
+    int length;
+    var doc = _db.collection('Bookmarks').doc(uid).get();
+    await doc.then(
+      (DocumentSnapshot documentSnapshot) {
+        try {
+          length = documentSnapshot.data().length;
+        } catch (e) {
+          length = 0;
+          print(e);
+        }
+      },
+    );
+    return length;
+  }
+
+  //? get data bookmark
+  Future<DocumentSnapshot> bookmarkData(String uid) async {
+    DocumentSnapshot _snaps = await _db.collection('Bookmarks').doc(uid).get();
+    return _snaps;
+  }
+
   //? get book detail from doc
   Future<DocumentSnapshot> bookData(String bookid) async {
     return _db.collection('All Book').doc(bookid).get();

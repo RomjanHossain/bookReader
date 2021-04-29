@@ -95,17 +95,25 @@ class _HomePageState extends State<HomePage> {
                                                   .size
                                                   .width /
                                               2,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              alignment: Alignment.center,
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  '${snapshot.data.docs[index]["cover url"]}'),
-                                            ),
-                                            color: Colors.lightBlue,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(20),
-                                              // '${snapshot.data.docs[index]["name"]}',
+                                          // decoration: BoxDecoration(
+                                          // image: DecorationImage(
+                                          //   alignment: Alignment.center,
+                                          //   fit: BoxFit.cover,
+                                          //   image: NetworkImage(
+                                          //       '${snapshot.data.docs[index]["cover url"]}'),
+                                          // ),
+                                          // color: Colors.lightBlue,
+                                          // borderRadius: BorderRadius.all(
+                                          //   Radius.circular(20),
+                                          // '${snapshot.data.docs[index]["name"]}',
+                                          // ),
+                                          // ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Image.network(
+                                              '${snapshot.data.docs[index]["cover url"]}',
+                                              fit: BoxFit.fitHeight,
                                             ),
                                           ),
                                         ),

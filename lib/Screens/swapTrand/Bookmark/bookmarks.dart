@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:knowyourbook/values/const.dart';
 import 'package:provider/provider.dart';
 
 class BookMarks extends StatelessWidget {
@@ -10,46 +12,38 @@ class BookMarks extends StatelessWidget {
     var _user = Provider.of<User>(context);
     return Container(
       child: (_user != null)
-          ? StaggeredGridView.countBuilder(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 300,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        'https://i.pinimg.com/originals/62/04/3b/62043b0bb353f49600a23ed1b5ec922f.jpg',
-                      ),
-                    ),
-                    color: Colors.lightBlue,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 8, top: 5),
-                      child: Icon(
-                        CupertinoIcons.bookmark,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
-              },
-              itemCount: 12,
-              staggeredTileBuilder: (index) {
-                return StaggeredTile.count(1, index.isEven ? 1.5 : 1.7);
-              },
-              crossAxisCount: 3,
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-              scrollDirection: Axis.vertical,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-            )
+          ? FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('Bookmarks')
+                  .doc(_user.uid)
+                  .get(),
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? StaggeredGridView.countBuilder(
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: Text(
+                              '${snapshot.data}',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 25),
+                            ),
+                          );
+                        },
+                        itemCount: 3,
+                        staggeredTileBuilder: (index) {
+                          return StaggeredTile.count(
+                              1, index.isEven ? 1.5 : 1.7);
+                        },
+                        crossAxisCount: 3,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+                        scrollDirection: Axis.vertical,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                      )
+                    : kloading();
+              })
           : Center(
               child: Text('No bookmark found'),
             ),
